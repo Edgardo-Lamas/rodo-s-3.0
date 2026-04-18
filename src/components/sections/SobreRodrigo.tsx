@@ -39,22 +39,7 @@ export default function SobreRodrigo() {
   const ref = useReveal();
 
   return (
-    <>
-      <style>{`
-        .reveal-section > * {
-          opacity: 0;
-          transform: translateY(28px);
-          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .reveal-section.in-view > *:nth-child(1) { opacity:1; transform:none; transition-delay: 0ms; }
-        .reveal-section.in-view > *:nth-child(2) { opacity:1; transform:none; transition-delay: 100ms; }
-        .reveal-section.in-view > *:nth-child(3) { opacity:1; transform:none; transition-delay: 180ms; }
-        .reveal-section.in-view > *:nth-child(4) { opacity:1; transform:none; transition-delay: 260ms; }
-        .reveal-section.in-view > *:nth-child(5) { opacity:1; transform:none; transition-delay: 340ms; }
-        .reveal-section.in-view > *:nth-child(6) { opacity:1; transform:none; transition-delay: 420ms; }
-      `}</style>
-
-      <section
+    <section
         id="sobre-mi"
         className="relative py-24 md:py-32"
         aria-labelledby="sobre-heading"
@@ -196,6 +181,5 @@ export default function SobreRodrigo() {
           </div>
         </div>
       </section>
-    </>
   );
 }

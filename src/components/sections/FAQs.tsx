@@ -96,10 +96,12 @@ function AccordionItem({
 /* ── Sección principal ── */
 
 export default function FAQs() {
-  /* Mobile: primera pregunta abierta por defecto */
-  const [openId, setOpenId] = useState<string>(() =>
-    typeof window !== "undefined" && window.innerWidth < 768 ? FAQS[0].id : ""
-  );
+  const [openId, setOpenId] = useState<string>("");
+
+  /* Abre la primera pregunta en mobile después del mount (evita mismatch SSR) */
+  useEffect(() => {
+    if (window.innerWidth < 768) setOpenId(FAQS[0].id);
+  }, []);
 
   const toggle = (id: string) => setOpenId((prev) => (prev === id ? "" : id));
 

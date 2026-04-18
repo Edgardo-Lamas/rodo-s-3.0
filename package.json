@@ -9,11 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@remotion/player": "^4.0.448",
     "geist": "^1.7.0",
     "lucide-react": "^1.8.0",
     "next": "14.2.35",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "remotion": "^4.0.448"
   },
   "devDependencies": {
     "@types/node": "^20",
