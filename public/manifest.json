@@ -1,0 +1,16 @@
+{
+  "name": "Rodo's 3.0",
+  "short_name": "Rodo's 3.0",
+  "description": "Soluciones informáticas para el día a día",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a1533",
+  "theme_color": "#0a1533",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}

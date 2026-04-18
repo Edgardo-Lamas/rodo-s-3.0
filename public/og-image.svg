@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1533;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#060d1f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#04090f;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="glowOrange" cx="85%" cy="85%" r="40%">
+      <stop offset="0%" style="stop-color:#e8820a;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#e8820a;stop-opacity:0" />
+    </radialGradient>
+    <radialGradient id="glowBlue" cx="10%" cy="10%" r="30%">
+      <stop offset="0%" style="stop-color:#4a9eff;stop-opacity:0.2" />
+      <stop offset="100%" style="stop-color:#4a9eff;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Fondo -->
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#glowOrange)" />
+  <rect width="1200" height="630" fill="url(#glowBlue)" />
+
+  <!-- Logo -->
+  <text x="600" y="270" font-family="'Helvetica Neue', Arial, sans-serif" font-size="96" font-weight="800" text-anchor="middle" letter-spacing="-3">
+    <tspan fill="#ffffff">Rodo&#x27;s </tspan><tspan fill="#e8820a">3.0</tspan>
+  </text>
+
+  <!-- Tagline -->
+  <text x="600" y="350" font-family="'Helvetica Neue', Arial, sans-serif" font-size="32" font-weight="400" fill="#e5e7eb" text-anchor="middle">
+    Soluciones inform&#xe1;ticas para el d&#xed;a a d&#xed;a
+  </text>
+
+  <!-- Sub-línea -->
+  <text x="600" y="410" font-family="'Helvetica Neue', Arial, sans-serif" font-size="22" fill="#6b7280" text-anchor="middle">
+    La Plata y alrededores &#xb7; A domicilio o remoto
+  </text>
+</svg>

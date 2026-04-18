@@ -9,8 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        brand: {
+          dark: "#0a1533",
+          blue: "#4a9eff",
+          orange: "#e8820a",
+          orangeDark: "#c46a00",
+        },
+      },
+      fontFamily: {
+        sans: ["var(--font-geist-sans)", "Inter", "sans-serif"],
       },
     },
   },
