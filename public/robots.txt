@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rodos3.com.ar/sitemap.xml
+Sitemap: https://rodo-s-3-0.vercel.app/sitemap.xml

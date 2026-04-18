@@ -5,7 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
 
-const SITE_URL = "https://rodos3.com.ar"; // TODO: actualizar con dominio real
+const SITE_URL = "https://rodo-s-3-0.vercel.app"; // TODO: actualizar cuando Rodrigo tenga dominio propio
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
