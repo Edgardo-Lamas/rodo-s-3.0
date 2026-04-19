@@ -32,26 +32,30 @@ const FEATURES: { icono: LucideIcon; titulo: string; descripcion: string }[] = [
   },
 ];
 
-const PROYECTOS: { titulo: string; rubro: string; gradiente: string }[] = [
+const PROYECTOS: { titulo: string; rubro: string; imagen: string; href: string }[] = [
   {
-    titulo: "Estudio profesional",
-    rubro: "Asesoría y consultoría",
-    gradiente: "from-[#0f2048] via-[#1a3a6e] to-[#0a1533]",
+    titulo: "LaNik",
+    rubro: "Diseño & tejido artesanal",
+    imagen: "/images/proj_lanik.png",
+    href: "https://edgardo-lamas.github.io/LaNik/",
   },
   {
-    titulo: "Comercio local",
-    rubro: "Venta minorista",
-    gradiente: "from-[#1a1a0a] via-[#3a2a05] to-[#0a1533]",
+    titulo: "Criterio Térmico",
+    rubro: "Plataforma técnica",
+    imagen: "/images/proj_criterio_termico.png",
+    href: "https://edgardo-lamas.github.io/Criterio-Termico/",
   },
   {
-    titulo: "Emprendimiento gastronómico",
-    rubro: "Gastronomía y delivery",
-    gradiente: "from-[#1a0a0a] via-[#2e1414] to-[#0a1533]",
+    titulo: "Alcance Legal Penal",
+    rubro: "Sistema de inteligencia jurídica",
+    imagen: "/images/proj_alcance_legal.png",
+    href: "https://edgardo-lamas.github.io/Alcance-Legal-Penal/",
   },
   {
-    titulo: "Servicios técnicos",
-    rubro: "Mantenimiento y soporte",
-    gradiente: "from-[#081830] via-[#0f2a4a] to-[#060d1f]",
+    titulo: "Sabiduría para el Corazón",
+    rubro: "Formación bíblica online",
+    imagen: "/images/proj_sabiduria.png",
+    href: "https://edgardo-lamas.github.io/sabidur-a322/",
   },
 ];
 
@@ -156,45 +160,41 @@ export default function DesarrolloWeb() {
             </p>
           </div>
 
-          {/* TODO: reemplazar por screenshots reales de proyectos cuando Rodrigo los apruebe */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {PROYECTOS.map((proyecto) => (
-              <div
+              <a
                 key={proyecto.titulo}
-                className="group relative rounded-2xl overflow-hidden aspect-[4/3] border border-white/10 cursor-default"
+                href={proyecto.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative rounded-2xl overflow-hidden aspect-[4/3] border border-white/10"
               >
-                {/* Placeholder visual con gradiente */}
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${proyecto.gradiente} transition-transform duration-300 group-hover:scale-105`}
-                  aria-hidden="true"
+                {/* Screenshot real */}
+                <Image
+                  src={proyecto.imagen}
+                  alt={proyecto.titulo}
+                  fill
+                  className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
 
-                {/* Dot pattern decorativo */}
-                <div
-                  className="absolute inset-0 opacity-[0.05]"
-                  style={{
-                    backgroundImage:
-                      "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='2' cy='2' r='1.5' fill='%23ffffff'/%3E%3C/svg%3E\")",
-                  }}
-                  aria-hidden="true"
-                />
+                {/* Overlay degradado inferior siempre visible */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
-                {/* Contenido normal */}
-                <div className="absolute inset-0 flex flex-col justify-end p-4 bg-gradient-to-t from-black/60 via-transparent to-transparent transition-opacity duration-300 group-hover:opacity-0">
-                  <p className="text-white font-semibold text-sm leading-tight">
-                    {proyecto.titulo}
-                  </p>
+                {/* Texto inferior */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 transition-opacity duration-300 group-hover:opacity-0">
+                  <p className="text-white font-semibold text-sm leading-tight">{proyecto.titulo}</p>
                   <p className="text-gray-400 text-xs mt-0.5">{proyecto.rubro}</p>
                 </div>
 
                 {/* Overlay hover */}
                 <div className="absolute inset-0 flex items-center justify-center bg-brand-dark/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100 p-4">
                   <p className="text-white text-sm font-medium text-center leading-snug">
-                    Proyecto realizado por{" "}
-                    <span className="text-brand-orange font-semibold">Rodo&apos;s 3.0</span>
+                    Ver sitio →{" "}
+                    <span className="block text-brand-orange font-semibold mt-1">{proyecto.titulo}</span>
                   </p>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
