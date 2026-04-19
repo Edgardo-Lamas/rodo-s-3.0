@@ -1,4 +1,4 @@
-import { Download, Trash2, Search, FileText } from "lucide-react";
+import { Download, Trash2, Search, FileText, KeyRound } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 const DRIVE_FOLDER =
@@ -12,6 +12,15 @@ const HERRAMIENTAS: {
   color: "orange" | "blue";
   href: string;
 }[] = [
+  {
+    icono: KeyRound,
+    nombre: "Generador de Contraseñas",
+    descripcion:
+      "Creá contraseñas seguras en un clic. Elegís la longitud, si querés mayúsculas, números y símbolos. Te la copia al portapapeles automáticamente.",
+    etiqueta: "Windows · .bat",
+    color: "blue",
+    href: "https://drive.google.com/file/d/1UExpBR0aFiB7aBR8Vis8JBbeMJagg6uN/view?usp=sharing",
+  },
   {
     icono: Trash2,
     nombre: "Limpieza Exprés",
