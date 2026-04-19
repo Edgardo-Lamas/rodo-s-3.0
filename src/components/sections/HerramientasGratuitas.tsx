@@ -55,7 +55,7 @@ const HERRAMIENTAS: {
       "PDF con los pasos básicos para protegerte de virus, estafas y phishing. Ideal para imprimir y tenerla a mano.",
     etiqueta: "PDF · Descargable",
     color: "orange",
-    href: DRIVE_FOLDER,
+    href: "https://drive.google.com/file/d/1w5SkM5S-iOTJKgPMAKvRwT1nII_Jeo0P/view?usp=sharing",
   },
   {
     icono: FileText,
@@ -64,7 +64,7 @@ const HERRAMIENTAS: {
       "Qué revisar cada 3 meses para que tu PC dure más. Lista descargable con logo de Rodo's 3.0.",
     etiqueta: "PDF · Descargable",
     color: "blue",
-    href: DRIVE_FOLDER,
+    href: "https://drive.google.com/file/d/1kX1qfF4dyAShkjcIx4EHtEn6kQG6vyv6/view?usp=sharing",
   },
 ];
 
