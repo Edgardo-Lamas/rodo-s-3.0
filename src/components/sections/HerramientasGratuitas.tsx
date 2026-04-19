@@ -1,4 +1,4 @@
-import { Download, Trash2, Search, FileText, KeyRound } from "lucide-react";
+import { Download, Trash2, Search, FileText, KeyRound, HardDrive } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 const DRIVE_FOLDER =
@@ -20,6 +20,15 @@ const HERRAMIENTAS: {
     etiqueta: "Windows · .bat",
     color: "blue",
     href: "https://drive.google.com/file/d/1UExpBR0aFiB7aBR8Vis8JBbeMJagg6uN/view?usp=sharing",
+  },
+  {
+    icono: HardDrive,
+    nombre: "Verificador de Disco",
+    descripcion:
+      "Analizá la salud de tu disco duro en segundos. Muestra el estado SMART, capacidad y particiones. Semáforo verde, amarillo o rojo según el resultado.",
+    etiqueta: "Windows · .bat",
+    color: "orange",
+    href: "https://drive.google.com/file/d/1h1Tkk_c1htldQ5aGqd3erutKhVdGxnqp/view?usp=sharing",
   },
   {
     icono: Trash2,
