@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { label: "Servicios", href: "#servicios" },
   { label: "Sobre mí", href: "#sobre-mi" },
   { label: "Desarrollo web", href: "#desarrollo-web" },
+  { label: "Herramientas gratis", href: "#herramientas" },
   { label: "Proceso", href: "#proceso" },
   { label: "FAQs", href: "#faqs" },
   { label: "Contacto", href: "#contacto" },

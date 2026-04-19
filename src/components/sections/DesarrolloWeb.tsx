@@ -1,4 +1,5 @@
 import { Smartphone, Zap, MessageCircle, Search } from "lucide-react";
+import Image from "next/image";
 import { WHATSAPP_URL } from "@/lib/config";
 import type { LucideIcon } from "lucide-react";
 
@@ -100,6 +101,19 @@ export default function DesarrolloWeb() {
             Diseñamos tu sitio web con la misma dedicación con la que cuidamos
             tu equipo. Resultados reales, sin vueltas.
           </p>
+        </div>
+
+        {/* ── Imagen decorativa ── */}
+        <div className="relative rounded-3xl overflow-hidden mb-16 aspect-[21/9]">
+          <Image
+            src="/images/codigo.jpg"
+            alt="Desarrollo web profesional — código en pantalla"
+            fill
+            className="object-cover object-center"
+            sizes="(max-width: 1200px) 100vw, 1152px"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/80 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-dark/60 via-transparent to-brand-dark/60" />
         </div>
 
         {/* ── Grid características ── */}

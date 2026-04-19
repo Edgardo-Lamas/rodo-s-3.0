@@ -7,6 +7,7 @@ import {
   Wifi,
   type LucideIcon,
 } from "lucide-react";
+import Image from "next/image";
 import { WHATSAPP_URL } from "@/lib/config";
 
 const PASOS: {
@@ -168,6 +169,19 @@ export default function Proceso() {
           <h3 className="text-2xl sm:text-3xl font-bold text-white text-center mb-8">
             ¿Dónde atiendo?
           </h3>
+
+          {/* Imagen cobertura */}
+          <div className="relative rounded-3xl overflow-hidden mb-8 aspect-[16/6]">
+            <Image
+              src="/images/soporte.jpg"
+              alt="Soporte técnico a domicilio en La Plata"
+              fill
+              className="object-cover object-top"
+              sizes="(max-width: 1200px) 100vw, 1152px"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-dark/80 via-brand-dark/30 to-brand-dark/80" />
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/60 via-transparent to-transparent" />
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-2xl mx-auto">
             {COBERTURA.map(({ icono: Icon, titulo, descripcion }) => (

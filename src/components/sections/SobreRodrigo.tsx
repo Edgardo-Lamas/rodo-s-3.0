@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 
 const STATS = [
   { valor: "15+", label: "años de experiencia" },
@@ -123,41 +124,27 @@ export default function SobreRodrigo() {
                 />
 
                 {/* Card visual */}
-                <div className="relative bg-gradient-to-br from-[#0f2048] to-[#060d1f] border border-white/10 rounded-3xl overflow-hidden aspect-[4/5] flex flex-col items-center justify-center gap-4 p-8">
-
-                  {/* Decoración circuital sutil */}
-                  <div
-                    className="absolute inset-0 opacity-[0.04]"
-                    style={{
-                      backgroundImage:
-                        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='2' cy='2' r='1.5' fill='%23ffffff'/%3E%3C/svg%3E\")",
-                    }}
-                    aria-hidden="true"
+                {/* TODO: reemplazar /images/tecnico.jpg por foto real de Rodrigo cuando esté disponible */}
+                <div className="relative rounded-3xl overflow-hidden aspect-[4/5] border border-white/10">
+                  <Image
+                    src="/images/tecnico.jpg"
+                    alt="Técnico informático trabajando en reparación de PC"
+                    fill
+                    className="object-cover object-center"
+                    sizes="(max-width: 1024px) 100vw, 400px"
+                    priority={false}
                   />
-
-                  {/* Avatar placeholder */}
-                  {/* TODO: reemplazar por foto real de Rodrigo cuando esté disponible */}
-                  <div
-                    className="w-36 h-36 rounded-full border-4 border-brand-orange/50 flex items-center justify-center shadow-2xl"
-                    style={{
-                      background:
-                        "radial-gradient(circle at 35% 35%, #1a3a6e, #0a1533)",
-                    }}
-                    aria-label="Avatar de Rodrigo"
-                    role="img"
-                  >
-                    <span
-                      className="text-brand-orange font-bold text-6xl select-none"
-                      aria-hidden="true"
-                    >
-                      R
-                    </span>
-                  </div>
-
-                  {/* Nombre */}
-                  <div className="text-center z-10">
-                    <p className="text-white font-semibold text-lg">Rodrigo</p>
-                    <p className="text-gray-400 text-sm">Técnico informático · La Plata</p>
+                  {/* Overlay degradado para leer el texto */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/90 via-brand-dark/20 to-transparent" />
+                  {/* Nombre sobre la imagen */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-brand-orange" aria-hidden="true" />
+                      <div>
+                        <p className="text-white font-semibold text-lg leading-tight">Rodrigo</p>
+                        <p className="text-gray-300 text-sm">Técnico informático · La Plata</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
