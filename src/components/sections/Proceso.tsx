@@ -3,8 +3,7 @@ import {
   Search,
   Wrench,
   CheckCircle,
-  MapPin,
-  Wifi,
+  Truck,
   type LucideIcon,
 } from "lucide-react";
 import Image from "next/image";
@@ -34,7 +33,7 @@ const PASOS: {
     numero: "03",
     titulo: "Trabajo",
     descripcion:
-      "A domicilio o remoto, según el caso. Te mantengo al tanto de cada paso.",
+      "Retiro tu equipo, lo reparo en el taller y te lo devuelvo funcionando. Te mantengo al tanto de cada paso.",
     icono: Wrench,
   },
   {
@@ -46,22 +45,25 @@ const PASOS: {
   },
 ];
 
-const COBERTURA: {
+const RETIRO_PASOS: {
   icono: LucideIcon;
   titulo: string;
   descripcion: string;
 }[] = [
   {
-    icono: MapPin,
-    titulo: "A domicilio",
-    descripcion:
-      "La Plata y alrededores. Voy yo mismo a tu casa u oficina.",
+    icono: Truck,
+    titulo: "Retiro a domicilio",
+    descripcion: "Coordinamos día y hora. Paso por tu casa u oficina en La Plata y alrededores a buscar el equipo.",
   },
   {
-    icono: Wifi,
-    titulo: "Remoto",
-    descripcion:
-      "Desde cualquier lugar del país. Resuelvo lo que se puede resolver online.",
+    icono: Wrench,
+    titulo: "Reparación en taller",
+    descripcion: "Lo trabajo en condiciones óptimas. Diagnóstico completo, reparación profesional y prueba final.",
+  },
+  {
+    icono: CheckCircle,
+    titulo: "Te lo devolvemos",
+    descripcion: "Una vez listo, te lo devuelvo en persona. Garantía de funcionamiento incluida.",
   },
 ];
 
@@ -164,17 +166,17 @@ export default function Proceso() {
           aria-hidden="true"
         />
 
-        {/* ── Parte B: Cobertura ── */}
+        {/* ── Parte B: Retiro a domicilio ── */}
         <div className="mb-12">
           <h3 className="text-2xl sm:text-3xl font-bold text-white text-center mb-8">
-            ¿Dónde atiendo?
+            ¿Cómo funciona el retiro?
           </h3>
 
-          {/* Imagen cobertura */}
+          {/* Imagen */}
           <div className="relative rounded-3xl overflow-hidden mb-8 aspect-[16/6]">
             <Image
               src="/images/soporte.jpg"
-              alt="Soporte técnico a domicilio en La Plata"
+              alt="Retiro de equipo a domicilio en La Plata"
               fill
               className="object-cover object-top"
               sizes="(max-width: 1200px) 100vw, 1152px"
@@ -183,22 +185,23 @@ export default function Proceso() {
             <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/60 via-transparent to-transparent" />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-2xl mx-auto">
-            {COBERTURA.map(({ icono: Icon, titulo, descripcion }) => (
+          {/* 3 pasos del flujo */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {RETIRO_PASOS.map(({ icono: Icon, titulo, descripcion }, idx) => (
               <div
                 key={titulo}
-                className="flex flex-col items-start gap-4 bg-white/5 border border-white/10 rounded-2xl p-7 transition-all duration-300 hover:border-brand-orange/40 hover:bg-white/[0.07]"
+                className="relative flex flex-col items-start gap-4 bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-brand-orange/40 hover:bg-white/[0.07] transition-all duration-300"
               >
+                {/* Número de paso */}
+                <span className="absolute top-4 right-5 text-4xl font-black text-brand-orange/10 select-none leading-none">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
                 <div className="w-12 h-12 rounded-xl bg-brand-orange/10 flex items-center justify-center">
-                  <Icon size={24} className="text-brand-orange" aria-hidden="true" />
+                  <Icon size={22} className="text-brand-orange" aria-hidden="true" />
                 </div>
                 <div>
-                  <h4 className="text-white font-semibold text-base mb-1">
-                    {titulo}
-                  </h4>
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    {descripcion}
-                  </p>
+                  <h4 className="text-white font-semibold text-base mb-1">{titulo}</h4>
+                  <p className="text-gray-400 text-sm leading-relaxed">{descripcion}</p>
                 </div>
               </div>
             ))}
@@ -207,14 +210,14 @@ export default function Proceso() {
 
         {/* ── Mensaje final ── */}
         <p className="text-center text-gray-300 text-base sm:text-lg">
-          ¿Tenés dudas sobre si puedo ayudarte desde donde estás?{" "}
+          ¿Estás en La Plata o alrededores y querés coordinar el retiro?{" "}
           <a
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="text-brand-blue font-medium underline underline-offset-4 hover:text-white transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue rounded"
           >
-            Escribime y lo vemos.
+            Escribime y lo arreglamos.
           </a>
         </p>
 
