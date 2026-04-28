@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
+import { PageTracker } from "@/components/PageTracker";
 
 const SITE_URL = "https://rodo-s-3-0.vercel.app"; // TODO: actualizar cuando Rodrigo tenga dominio propio
 
@@ -121,6 +122,7 @@ export default function RootLayout({
           Saltar al contenido principal
         </a>
 
+        <PageTracker />
         <Header />
         <div id="main-content" tabIndex={-1}>
           {children}

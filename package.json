@@ -9,15 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.91.1",
     "@remotion/player": "^4.0.448",
+    "@supabase/supabase-js": "^2.105.1",
+    "bcryptjs": "^3.0.3",
     "geist": "^1.7.0",
     "lucide-react": "^1.8.0",
     "next": "14.2.35",
+    "next-auth": "^5.0.0-beta.31",
     "react": "^18",
     "react-dom": "^18",
+    "recharts": "^3.8.1",
     "remotion": "^4.0.448"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
