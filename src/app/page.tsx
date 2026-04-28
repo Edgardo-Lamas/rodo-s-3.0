@@ -2,6 +2,7 @@ import Hero from "@/components/sections/Hero";
 import Servicios from "@/components/sections/Servicios";
 import SobreRodrigo from "@/components/sections/SobreRodrigo";
 import DesarrolloWeb from "@/components/sections/DesarrolloWeb";
+import RedFamiliar from "@/components/sections/RedFamiliar";
 import HerramientasGratuitas from "@/components/sections/HerramientasGratuitas";
 import Proceso from "@/components/sections/Proceso";
 import FAQs from "@/components/sections/FAQs";
@@ -14,6 +15,7 @@ export default function Home() {
       <Servicios />
       <SobreRodrigo />
       <DesarrolloWeb />
+      <RedFamiliar />
       <HerramientasGratuitas />
       <Proceso />
       <FAQs />

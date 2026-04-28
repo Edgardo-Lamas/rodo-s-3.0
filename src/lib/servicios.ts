@@ -5,7 +5,6 @@ import {
   HardDrive,
   Lock,
   Compass,
-  Coins,
   Globe,
   type LucideIcon,
 } from "lucide-react";
@@ -107,32 +106,19 @@ export const SERVICIOS: Servicio[] = [
     ],
   },
   {
-    id: "cryptos",
-    titulo: "Cryptos y más",
-    descripcion:
-      "Asesoría en herramientas digitales emergentes. Te acompaño en lo nuevo.",
-    icono: Coins,
-    anchor: "#servicios",
-    imagen: "/images/card_cryptos.png",
-    bullets: [
-      "Wallets y exchanges explicados simple",
-      "Seguridad en manejo de activos digitales",
-      "Herramientas emergentes al alcance de todos",
-    ],
-  },
-  {
     id: "desarrollo-web",
     titulo: "Desarrollo web",
     descripcion:
-      "Landing pages y sitios web profesionales. Tu negocio online, rápido y bien hecho.",
+      "Desde la landing page hasta sistemas completos con dashboard de KPIs, agentes de IA y automatizaciones. Tu negocio digital, con la tecnología que realmente necesita.",
     icono: Globe,
     anchor: "#desarrollo-web",
     badge: "NUEVO",
     imagen: "/images/card_desarrolloweb.png",
     bullets: [
-      "Sitio rápido, mobile-first y profesional",
+      "Sitios web y landing pages profesionales",
+      "Dashboards de KPIs a medida",
+      "Agentes de IA y automatizaciones",
       "SEO básico + integración con WhatsApp",
-      "Entrega real en tiempo acordado",
     ],
   },
 ];
