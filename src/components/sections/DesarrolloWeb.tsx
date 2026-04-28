@@ -55,7 +55,7 @@ const PROYECTOS: { titulo: string; rubro: string; imagen: string; href: string }
     titulo: "Sabiduría para el Corazón",
     rubro: "Formación bíblica online",
     imagen: "/images/proj_sabiduria.png",
-    href: "https://edgardo-lamas.github.io/sabidur-a322/",
+    href: "https://sabiduriadelcorazon.vercel.app/",
   },
 ];
 
