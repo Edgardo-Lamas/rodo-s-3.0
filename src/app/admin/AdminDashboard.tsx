@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts";
-import { RefreshCw, TrendingUp, MousePointerClick, Download, MessageCircle, Percent } from "lucide-react";
+import { RefreshCw, TrendingUp, MousePointerClick, Download, MessageCircle, Percent, Mail } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import AgenteTab from "./AgenteTab";
 import ConsultasTab from "./ConsultasTab";
@@ -16,6 +16,7 @@ interface StatsData {
     clicksWAHoy: number; clicksWA7d: number;
     descargasHoy: number; descargas7d: number;
     consultasTotal: number; consultasNuevas: number;
+    leadsTotal: number; leads7d: number;
     conversionPct: number;
   };
   visitasPorDia: { fecha: string; visitas: number; unicos: number }[];
@@ -24,6 +25,9 @@ interface StatsData {
   consultas: {
     id: string; nombre: string; email: string; telefono?: string;
     servicio?: string; mensaje?: string; estado: string; created_at: string;
+  }[];
+  leads: {
+    id: string; nombre?: string; email: string; herramienta: string; created_at: string;
   }[];
   demo?: boolean;
 }
@@ -125,6 +129,7 @@ export default function AdminDashboard() {
           {[
             { key: "panel",     label: "Panel" },
             { key: "consultas", label: `Consultas${data?.kpis.consultasNuevas ? ` (${data.kpis.consultasNuevas})` : ""}` },
+            { key: "leads",     label: `Leads${data?.kpis.leads7d ? ` (${data.kpis.leads7d})` : ""}` },
             { key: "agente",    label: "✦ Agente" },
           ].map((t) => (
             <button key={t.key} onClick={() => setTab(t.key)} style={{
@@ -141,6 +146,34 @@ export default function AdminDashboard() {
 
         {tab === "agente" && <AgenteTab />}
         {tab === "consultas" && data && <ConsultasTab consultas={data.consultas} />}
+        {tab === "leads" && data && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <Panel title={`Leads capturados — total ${data.kpis.leadsTotal} · últimos 7 días ${data.kpis.leads7d}`}>
+              {!data.leads?.length ? (
+                <p style={{ fontSize: 12, color: "#374151" }}>Sin leads aún. Cuando alguien descargue una herramienta aparecerá acá.</p>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  {data.leads.map((l) => (
+                    <div key={l.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", borderRadius: 5, background: "#161618", border: "1px solid #2C2C2E" }}>
+                      <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#e8820a22", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                        <Mail size={14} color="#e8820a" />
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p style={{ fontSize: 13, color: "#F9FAFB", fontWeight: 500, margin: "0 0 2px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {l.nombre ? `${l.nombre} · ` : ""}<span style={{ color: "#e8820a" }}>{l.email}</span>
+                        </p>
+                        <p style={{ fontSize: 11, color: "#4B5563", margin: 0 }}>{l.herramienta}</p>
+                      </div>
+                      <span style={{ fontSize: 11, color: "#374151", flexShrink: 0 }}>
+                        {new Date(l.created_at).toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", year: "2-digit" })}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Panel>
+          </div>
+        )}
 
         {tab === "panel" && loading && !data && (
           <div style={{ display: "flex", justifyContent: "center", paddingTop: 80 }}>
@@ -159,6 +192,7 @@ export default function AdminDashboard() {
                 <KpiCard label="Clicks WhatsApp"   value={data.kpis.clicksWA7d}      sub={`${data.kpis.clicksWAHoy} hoy`}           color="#22C55E" icon={MousePointerClick} />
                 <KpiCard label="Descargas"         value={data.kpis.descargas7d}     sub={`${data.kpis.descargasHoy} hoy`}          color="#8B5CF6" icon={Download} />
                 <KpiCard label="Consultas"         value={data.kpis.consultasTotal}  sub={`${data.kpis.consultasNuevas} sin leer`}  color="#F59E0B" icon={MessageCircle} />
+                <KpiCard label="Leads 7 días"      value={data.kpis.leads7d}             sub={`${data.kpis.leadsTotal} en total`} color="#e8820a" icon={Mail} />
                 <KpiCard label="Conversión WA"     value={`${data.kpis.conversionPct}%`} sub="Visitantes → WhatsApp"              color="#10B981" icon={Percent} />
               </div>
 

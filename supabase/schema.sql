@@ -51,7 +51,27 @@ create policy "insertar_consulta" on consultas
   for insert to anon with check (true);
 
 
--- ─── 3. USERS (solo admin: Rodrigo) ──────────────────────────────
+-- ─── 3. LEADS (captura de email antes de descarga) ──────────────
+
+create table if not exists leads (
+  id          uuid primary key default gen_random_uuid(),
+  nombre      text,
+  email       text not null,
+  herramienta text not null,
+  created_at  timestamptz default now()
+);
+
+create index if not exists leads_email_idx      on leads (email);
+create index if not exists leads_created_at_idx on leads (created_at desc);
+
+alter table leads enable row level security;
+
+-- El modal público puede insertar (service role desde API), nadie puede leer desde el browser
+create policy "insertar_lead" on leads
+  for insert to anon with check (true);
+
+
+-- ─── 4. USERS (solo admin: Rodrigo) ──────────────────────────────
 
 create table if not exists users (
   id            uuid primary key default gen_random_uuid(),

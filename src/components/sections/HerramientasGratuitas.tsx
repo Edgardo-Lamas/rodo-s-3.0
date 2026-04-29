@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import { Download, Trash2, Search, FileText, KeyRound, HardDrive } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import DescargaModal from "@/components/DescargaModal";
 
 const DRIVE_FOLDER =
   "https://drive.google.com/drive/folders/15dLflR97SAuXhPvVaTgEDxbNDXNEH6Cb?usp=sharing";
@@ -69,6 +73,8 @@ const HERRAMIENTAS: {
 ];
 
 export default function HerramientasGratuitas() {
+  const [modalHerramienta, setModalHerramienta] = useState<{ nombre: string; href: string } | null>(null);
+
   return (
     <section
       id="herramientas"
@@ -166,10 +172,8 @@ export default function HerramientasGratuitas() {
                     Pronto disponible
                   </span>
                 ) : (
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => setModalHerramienta({ nombre, href })}
                     aria-label={`Descargar ${nombre}`}
                     className={`inline-flex items-center gap-2 font-semibold text-sm px-5 py-2.5 rounded-full border transition-all duration-200 w-fit ${
                       isBlue
@@ -179,7 +183,7 @@ export default function HerramientasGratuitas() {
                   >
                     <Download size={15} aria-hidden="true" />
                     Descargar gratis
-                  </a>
+                  </button>
                 )}
               </div>
             );
@@ -188,10 +192,18 @@ export default function HerramientasGratuitas() {
 
         {/* ── Nota al pie ── */}
         <p className="text-center text-gray-500 text-sm">
-          100% gratis · Sin registro · Sin publicidad · Sin trampas.
+          100% gratis · Sin publicidad · Sin trampas.
         </p>
 
       </div>
+
+      {/* Modal de descarga */}
+      {modalHerramienta && (
+        <DescargaModal
+          herramienta={modalHerramienta}
+          onClose={() => setModalHerramienta(null)}
+        />
+      )}
     </section>
   );
 }

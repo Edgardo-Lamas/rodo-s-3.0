@@ -22,6 +22,7 @@ function demoData() {
       clicksWAHoy: 3, clicksWA7d: 18,
       descargasHoy: 2, descargas7d: 11,
       consultasTotal: 5, consultasNuevas: 2,
+      leadsTotal: 8, leads7d: 3,
       conversionPct: 24,
     },
     visitasPorDia,
@@ -38,6 +39,7 @@ function demoData() {
       { nombre: "Guía de Seguridad Digital", descargas: 2 },
     ],
     consultas: [],
+    leads: [],
     demo: true,
   };
 }
@@ -58,9 +60,10 @@ export async function GET() {
   const hace7d   = new Date(now.getTime() -  7 * 24 * 60 * 60 * 1000).toISOString();
   const hoy      = new Date(now.setHours(0, 0, 0, 0)).toISOString();
 
-  const [{ data: actividad }, { data: consultas }] = await Promise.all([
+  const [{ data: actividad }, { data: consultas }, { data: leads }] = await Promise.all([
     supabase.from("actividad").select("*").gte("created_at", hace30d).order("created_at", { ascending: false }),
     supabase.from("consultas").select("id,nombre,email,telefono,servicio,mensaje,estado,created_at").order("created_at", { ascending: false }).limit(20),
+    supabase.from("leads").select("id,nombre,email,herramienta,created_at").order("created_at", { ascending: false }).limit(50),
   ]);
 
   const act    = actividad ?? [];
@@ -119,6 +122,10 @@ export async function GET() {
   const consultasTotal  = (consultas ?? []).length;
   const consultasNuevas = (consultas ?? []).filter((c) => c.estado === "nuevo").length;
 
+  const leadsAll  = leads ?? [];
+  const leadsTotal = leadsAll.length;
+  const leads7d    = leadsAll.filter((l) => l.created_at >= hace7d).length;
+
   return NextResponse.json({
     kpis: {
       visitasHoy: pageviewsHoy.length,
@@ -128,12 +135,14 @@ export async function GET() {
       clicksWAHoy, clicksWA7d,
       descargasHoy, descargas7d,
       consultasTotal, consultasNuevas,
+      leadsTotal, leads7d,
       conversionPct,
     },
     visitasPorDia,
     seccionesMasVistas,
     herramientasMasDescargadas,
     consultas: (consultas ?? []).slice(0, 10),
+    leads: leadsAll.slice(0, 20),
     demo: false,
   });
 }
