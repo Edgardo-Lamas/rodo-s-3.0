@@ -101,42 +101,54 @@ Funciona en **modo demo** sin Supabase (muestra badge "DEMO" con datos ficticios
 
 ## Servicio: Internet Segura para la Familia
 
+### Roles — quién ve qué
+
+| Rol | Acceso |
+|---|---|
+| **Rodrigo** | Solo configuración técnica. No ve historial de navegación ni datos de la familia. |
+| **Los padres** | Dashboard propio con actividad en tiempo real, reportes, estado del filtro. Tienen todas las contraseñas. |
+| **El hijo** | No puede desinstalar el filtro ni cambiar configuraciones sin la clave de los padres. |
+
 ### Modelo de negocio
 
 | Plan | Tipo | Incluye |
 |---|---|---|
-| Instalación | Pago único | Hardware + configuración inicial en domicilio |
-| Abono Básico | Mensual | Actualización de filtros + soporte WA + monitoreo remoto |
-| Abono Completo | Mensual | Todo lo básico + VPN en móviles + reportes + ajustes incluidos |
+| Instalación | Pago único | Configuración del router del hogar — cubre todos los dispositivos en casa |
+| Abono Básico | Mensual | Mantenimiento del filtro del router + soporte por WhatsApp |
+| Abono Completo | Mensual | Todo lo anterior + celulares y tablets protegidos **fuera del hogar** + dashboard para los padres |
 
-### Reglas del servicio
+### Cómo se bloquea la desinstalación por dispositivo
 
-- **Las restricciones las define el padre (cliente)**, no Rodrigo. El plan define la base; el padre pide ajustes.
-- **Rodrigo no ve ni almacena datos de navegación.** Las credenciales del panel de reportes pertenecen al cliente.
-- Al contratar se entrega un documento firmado que lo certifica (Ley 25.326 de Protección de Datos Personales, Argentina).
+- **iOS/iPadOS** — Screen Time con código de acceso que solo conocen los padres. Impide eliminar el perfil y cambiar configuraciones de red.
+- **Android** — Google Family Link vinculado a la cuenta Google de los padres. Sin su aprobación el hijo no puede desinstalar apps ni cambiar el DNS.
+- **Windows** — El script requiere contraseña de administrador para revertirse. El hijo usa cuenta estándar sin privilegios.
 
 ### Arquitectura técnica (interna — no comunicar al cliente)
 
-- **Router:** NextDNS (recomendado, gestión remota) o Pi-hole en Raspberry Pi (self-hosted)
-- **Windows:** script `.bat` que aplica la protección a nivel sistema y bloquea que el usuario la desactive sin contraseña admin
-- **Android:** AdGuard o DNS Privado nativo (Android 9+)
-- **iOS/iPadOS:** perfil de configuración `.mobileconfig` + Screen Time de Apple
+- **Tecnología principal:** NextDNS — es la única opción que protege los celulares fuera del hogar.
+- **Pi-hole:** opción alternativa solo para clientes que lo pidan o que ya tengan el hardware. Cubre únicamente la red del hogar, no los dispositivos móviles fuera de casa.
+- **Router:** cambio de DNS apuntando a NextDNS — cubre todos los dispositivos del hogar.
+- **Windows:** script `.bat` — aplica filtro a nivel sistema, requiere admin para revertir.
+- **iOS/iPadOS:** perfil `.mobileconfig` + Screen Time con clave de los padres — funciona en cualquier red.
+- **Android:** Google Family Link + DNS Privado nativo (Android 9+) o app NextDNS.
 
 ### Qué construir (roadmap de herramientas)
 
 | Componente | Qué es | Estado |
 |---|---|---|
-| Script Windows `.bat` | Configura protección DNS segura, bloquea desactivación sin admin | 🔲 Pendiente |
-| Perfil iOS `.mobileconfig` | El padre lo instala en el iPhone/iPad del hijo desde Safari | 🔲 Pendiente |
-| Guía PDF para padres | Qué hacer si algo no funciona, cómo pedir una excepción | 🔲 Pendiente |
-| Panel Rodrigo — clientes | Vista de todos los clientes de abono: estado activo/inactivo, última vez con bloqueos | 🔲 Pendiente |
-| Página de estado por familia | URL privada por familia: qué se bloqueó esta semana, por categoría | 🔲 Pendiente |
+| Script Windows `.bat` | Configura filtro DNS, requiere admin para revertir | ✅ Hecho |
+| Perfil iOS `.mobileconfig` | DNS-over-HTTPS para iPhone/iPad, funciona fuera del hogar | ✅ Hecho |
+| Guía Android `.html` | Pasos para configurar DNS privado en Android 9+ | ✅ Hecho |
+| Guía Router `.html` | Referencia interna por marca (TP-Link, Fibertel, Claro) | ✅ Hecho |
+| Contrato de privacidad `.html` | Documento firmable Ley 25.326, un ejemplar por parte | ✅ Hecho |
+| Dashboard para los padres | URL privada por familia: actividad en tiempo real + historial | 🔲 Pendiente |
+| Panel Rodrigo — clientes | Vista de todos los clientes: estado activo/inactivo, alertas | 🔲 Pendiente |
 
 ### Privacidad — cómo comunicarlo al cliente
 
 Tres garantías verificables (sin explicar el mecanismo técnico):
 1. **Tráfico invisible para terceros** — la navegación no es accesible para nadie fuera del hogar
-2. **El panel es tuyo, con tu contraseña** — solo el padre accede; puede cambiar la clave cuando quiera
+2. **El panel es tuyo, con tu contraseña** — solo los padres acceden; pueden cambiar la clave cuando quieran
 3. **Sin historial almacenado** — los reportes son en tiempo real, no se archivan
 
 ---
