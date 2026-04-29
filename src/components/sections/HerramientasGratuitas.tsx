@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Download, Trash2, Search, FileText, KeyRound, HardDrive } from "lucide-react";
+import { Download, Trash2, Search, FileText, KeyRound, HardDrive, ShieldCheck } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import DescargaModal from "@/components/DescargaModal";
 
@@ -60,6 +60,15 @@ const HERRAMIENTAS: {
     etiqueta: "PDF · Descargable",
     color: "orange",
     href: "https://drive.google.com/file/d/1w5SkM5S-iOTJKgPMAKvRwT1nII_Jeo0P/view?usp=sharing",
+  },
+  {
+    icono: ShieldCheck,
+    nombre: "Internet Segura para la Familia",
+    descripcion:
+      "Activá el filtro de contenido en tu PC con un doble clic. Bloquea sitios para adultos, malware y phishing automáticamente. Sin instalación, sin configuración técnica.",
+    etiqueta: "Windows · .bat",
+    color: "blue",
+    href: "/tools/internet-segura-windows.bat",
   },
   {
     icono: FileText,
