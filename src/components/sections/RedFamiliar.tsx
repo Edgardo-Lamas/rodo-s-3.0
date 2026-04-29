@@ -334,8 +334,8 @@ export default function RedFamiliar() {
               ¿Cómo protegemos tu privacidad?
             </h3>
             <p className="text-gray-400 text-base max-w-2xl mx-auto leading-relaxed">
-              Tu historial de navegación es tuyo. Rodrigo configura el sistema y
-              se va — no guarda, no ve ni tiene acceso a lo que hacen en tu red.
+              El sistema está diseñado desde la base para que el historial de
+              navegación de tu familia quede en tus manos — y solo en las tuyas.
             </p>
           </div>
 
@@ -347,13 +347,13 @@ export default function RedFamiliar() {
               </div>
               <div>
                 <h4 className="text-white font-semibold text-base mb-2">
-                  Rodrigo no ve tu tráfico
+                  Tráfico invisible para terceros
                 </h4>
                 <p className="text-gray-400 text-sm leading-relaxed">
-                  El sistema funciona cambiando el DNS del router. El tráfico de
-                  tu casa va directo a los servidores de filtrado — no pasa por
-                  ningún servidor de Rodrigo. Técnicamente es imposible que
-                  intercepte tu navegación.
+                  El sistema opera cambiando el DNS del router. La navegación
+                  de tu casa va directo a los servidores de filtrado, sin pasar
+                  por ningún servidor externo. Por arquitectura, es técnicamente
+                  imposible que alguien ajeno intercepte tu tráfico.
                 </p>
               </div>
             </div>
@@ -365,13 +365,13 @@ export default function RedFamiliar() {
               </div>
               <div>
                 <h4 className="text-white font-semibold text-base mb-2">
-                  Las credenciales son tuyas
+                  El panel es tuyo, con tu contraseña
                 </h4>
                 <p className="text-gray-400 text-sm leading-relaxed">
-                  El panel donde ves los reportes lo abrís vos, con tu propio
-                  email y contraseña. Rodrigo no guarda esas claves. Podés
-                  cambiarlas cuando quieras y él queda sin acceso — eso es
-                  la garantía más concreta que podemos darte.
+                  Los reportes de actividad se visualizan en un panel personal
+                  al que solo accedés vos, con tu propio email y contraseña.
+                  Las credenciales no se comparten con nadie. Podés cambiarlas
+                  en cualquier momento desde tu cuenta.
                 </p>
               </div>
             </div>
@@ -387,8 +387,8 @@ export default function RedFamiliar() {
                 </h4>
                 <p className="text-gray-400 text-sm leading-relaxed">
                   El sistema se configura para no guardar logs de navegación.
-                  Los reportes se generan en tiempo real y no se archivan.
-                  Nadie — ni Rodrigo ni el servicio de filtrado — tiene un
+                  Los reportes se generan en tiempo real y no quedan archivados
+                  en ningún servidor. Una vez que pasa el período, no existe
                   registro de qué sitios visitó tu familia.
                 </p>
               </div>
@@ -405,10 +405,9 @@ export default function RedFamiliar() {
               <span className="text-gray-400 font-medium">Marco legal — </span>
               Este servicio opera bajo la{" "}
               <span className="text-gray-400">Ley 25.326 de Protección de Datos Personales</span>{" "}
-              de Argentina. Rodrigo actúa como configurador técnico, sin
-              tratamiento ni retención de datos personales de navegación. Al
-              contratar el servicio recibís un documento que lo establece por
-              escrito.
+              de Argentina. La instalación no implica tratamiento ni retención
+              de datos personales de navegación. Al contratar el servicio recibís
+              un documento que lo establece por escrito.
             </p>
           </div>
         </div>
