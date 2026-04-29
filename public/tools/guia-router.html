@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuración del Router — Rodo's 3.0</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, Arial, sans-serif;
+      font-size: 13px;
+      color: #1a1a1a;
+      background: #fff;
+      padding: 40px;
+      max-width: 780px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .logo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #1a1a1a;
+      padding-bottom: 16px;
+      margin-bottom: 28px;
+    }
+    .logo-nombre { font-size: 20px; font-weight: bold; }
+    .logo-sub { font-size: 11px; color: #555; margin-top: 2px; }
+    h1 { font-size: 18px; margin-bottom: 4px; }
+    .bajada { color: #555; font-size: 12px; margin-bottom: 28px; }
+    .aviso {
+      background: #e8f4fd;
+      border-left: 4px solid #3b82f6;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 28px;
+      font-size: 12px;
+    }
+    .dns-box {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 16px 0 28px;
+    }
+    .dns-box p { font-size: 12px; color: #444; margin-bottom: 8px; }
+    .dns-val { font-family: monospace; font-size: 14px; font-weight: bold; color: #15803d; display: block; margin-bottom: 4px; }
+    .marca {
+      margin-bottom: 32px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .marca-header {
+      background: #f9fafb;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 12px 16px;
+      font-weight: bold;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .marca-badge {
+      font-size: 10px;
+      font-weight: normal;
+      background: #e5e7eb;
+      color: #555;
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+    .marca-body { padding: 16px; }
+    .paso { margin-bottom: 12px; display: flex; gap: 10px; }
+    .paso-n {
+      width: 22px;
+      height: 22px;
+      background: #1a1a1a;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .paso p { font-size: 12px; color: #333; }
+    .ruta {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-family: monospace;
+      font-size: 11px;
+    }
+    .valor {
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: bold;
+      color: #15803d;
+    }
+    .separador { border: none; border-top: 1px solid #e5e7eb; margin: 28px 0; }
+    .problema { margin-bottom: 14px; }
+    .problema strong { display: block; font-size: 12px; margin-bottom: 2px; }
+    .problema p { font-size: 12px; color: #444; }
+    .nota {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 10px 14px;
+      font-size: 12px;
+      border-radius: 0 4px 4px 0;
+      margin-top: 12px;
+    }
+    .pie {
+      margin-top: 32px;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 12px;
+      font-size: 10px;
+      color: #888;
+      text-align: center;
+    }
+    @media print {
+      body { padding: 20px; }
+      @page { margin: 2cm; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo-header">
+    <div>
+      <div class="logo-nombre">Rodo's 3.0</div>
+      <div class="logo-sub">Servicio técnico informático · La Plata, Buenos Aires</div>
+    </div>
+  </div>
+
+  <h1>Internet Segura para la Familia</h1>
+  <p class="bajada">Guía de configuración del router · Referencia interna de instalación</p>
+
+  <div class="aviso">
+    <strong>¿Para qué sirve configurar el router?</strong> Al configurar el DNS en el router,
+    <em>todos</em> los dispositivos del hogar quedan protegidos automáticamente (Smart TVs, consolas,
+    notebooks, celulares), sin necesidad de configurar cada uno por separado.
+  </div>
+
+  <div class="dns-box">
+    <p><strong>Servidores DNS a configurar en todos los casos:</strong></p>
+    <span class="dns-val">DNS Primario:    1.1.1.3</span>
+    <span class="dns-val">DNS Secundario:  1.0.0.3</span>
+    <p style="margin-top:8px">Cloudflare for Families — bloquea adultos, malware y phishing.</p>
+  </div>
+
+  <!-- TP-Link -->
+  <div class="marca">
+    <div class="marca-header">
+      TP-Link
+      <span class="marca-badge">Archer / TL-WR series</span>
+    </div>
+    <div class="marca-body">
+      <div class="paso"><div class="paso-n">1</div><p>Ingresar a <span class="ruta">192.168.0.1</span> desde cualquier navegador.</p></div>
+      <div class="paso"><div class="paso-n">2</div><p>Usuario: <span class="valor">admin</span> · Contraseña: <span class="valor">admin</span> (o la personalizada del cliente).</p></div>
+      <div class="paso"><div class="paso-n">3</div><p>Ir a <span class="ruta">Avanzado → Red → DHCP</span>.</p></div>
+      <div class="paso"><div class="paso-n">4</div><p>En los campos <strong>DNS Primario</strong> y <strong>DNS Secundario</strong> ingresar los valores indicados arriba.</p></div>
+      <div class="paso"><div class="paso-n">5</div><p>Guardar y reiniciar el router.</p></div>
+    </div>
+  </div>
+
+  <!-- Fibertel / Flow -->
+  <div class="marca">
+    <div class="marca-header">
+      Fibertel / Flow
+      <span class="marca-badge">Routers de Telecom / Cablevision</span>
+    </div>
+    <div class="marca-body">
+      <div class="paso"><div class="paso-n">1</div><p>Ingresar a <span class="ruta">192.168.0.1</span> o <span class="ruta">192.168.100.1</span> según el modelo.</p></div>
+      <div class="paso"><div class="paso-n">2</div><p>Usuario y contraseña están en la etiqueta del router (generalmente <span class="valor">admin / admin</span> o <span class="valor">user / user</span>).</p></div>
+      <div class="paso"><div class="paso-n">3</div><p>Ir a <span class="ruta">Configuración LAN → Servidor DHCP</span>.</p></div>
+      <div class="paso"><div class="paso-n">4</div><p>Completar los campos de DNS con los valores indicados.</p></div>
+      <div class="paso"><div class="paso-n">5</div><p>Guardar y reconectar los dispositivos del cliente al WiFi.</p></div>
+      <div class="nota">En algunos modelos de Fibertel el DNS está en <span class="ruta">Avanzado → DNS</span> directamente.</div>
+    </div>
+  </div>
+
+  <!-- Claro / Personal -->
+  <div class="marca">
+    <div class="marca-header">
+      Claro / Personal
+      <span class="marca-badge">Routers de AMX / Telecom</span>
+    </div>
+    <div class="marca-body">
+      <div class="paso"><div class="paso-n">1</div><p>Ingresar a <span class="ruta">192.168.1.1</span>.</p></div>
+      <div class="paso"><div class="paso-n">2</div><p>Credenciales en etiqueta del equipo. Comunes: <span class="valor">admin / 1234</span> o <span class="valor">admin / admin</span>.</p></div>
+      <div class="paso"><div class="paso-n">3</div><p>Ir a <span class="ruta">Red Local → DHCP → Opciones avanzadas</span>.</p></div>
+      <div class="paso"><div class="paso-n">4</div><p>Completar DNS Primario y Secundario.</p></div>
+      <div class="paso"><div class="paso-n">5</div><p>Aplicar cambios y reiniciar.</p></div>
+    </div>
+  </div>
+
+  <!-- Genérico -->
+  <div class="marca">
+    <div class="marca-header">
+      Cualquier otro router
+      <span class="marca-badge">Procedimiento genérico</span>
+    </div>
+    <div class="marca-body">
+      <div class="paso"><div class="paso-n">1</div><p>La IP del router suele ser <span class="ruta">192.168.0.1</span> o <span class="ruta">192.168.1.1</span>. Se puede verificar con <span class="ruta">ipconfig</span> en Windows → ver "Puerta de enlace predeterminada".</p></div>
+      <div class="paso"><div class="paso-n">2</div><p>Buscar la sección de configuración DHCP o LAN.</p></div>
+      <div class="paso"><div class="paso-n">3</div><p>Localizar los campos DNS y completar con los valores indicados al inicio de esta guía.</p></div>
+      <div class="paso"><div class="paso-n">4</div><p>Guardar y reiniciar el router.</p></div>
+    </div>
+  </div>
+
+  <hr class="separador">
+
+  <div>
+    <strong style="font-size:12px; text-transform:uppercase; letter-spacing:0.5px;">Resolución de problemas comunes</strong>
+    <div style="margin-top:12px">
+      <div class="problema">
+        <strong>No puedo acceder al panel del router</strong>
+        <p>Probar las dos IPs habituales: 192.168.0.1 y 192.168.1.1. Si ninguna funciona, ejecutar <span class="ruta">ipconfig</span> en Windows y buscar "Puerta de enlace predeterminada".</p>
+      </div>
+      <div class="problema">
+        <strong>Guardé los DNS pero los dispositivos siguen sin filtrado</strong>
+        <p>Desconectar y reconectar cada dispositivo al WiFi para que tome la nueva configuración DHCP. También limpiar el cache DNS en Windows con <span class="ruta">ipconfig /flushdns</span>.</p>
+      </div>
+      <div class="problema">
+        <strong>El router no deja modificar el DNS</strong>
+        <p>Algunos routers de ISP tienen el panel bloqueado. En ese caso configurar el DNS en cada dispositivo individualmente (script Windows + perfil iOS + guía Android).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pie">
+    Rodo's 3.0 · La Plata, Buenos Aires · wa.me/5492215069677 · Guía de uso interno — no distribuir al cliente.
+  </div>
+
+</body>
+</html>

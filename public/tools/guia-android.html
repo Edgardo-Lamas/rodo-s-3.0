@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Internet Segura en Android — Rodo's 3.0</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, Arial, sans-serif;
+      font-size: 13px;
+      color: #1a1a1a;
+      background: #fff;
+      padding: 40px;
+      max-width: 780px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .logo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #1a1a1a;
+      padding-bottom: 16px;
+      margin-bottom: 28px;
+    }
+    .logo-nombre { font-size: 20px; font-weight: bold; }
+    .logo-sub { font-size: 11px; color: #555; margin-top: 2px; }
+    h1 { font-size: 18px; margin-bottom: 4px; }
+    .bajada { color: #555; font-size: 12px; margin-bottom: 28px; }
+    .aviso {
+      background: #fff8e1;
+      border-left: 4px solid #f59e0b;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 28px;
+      font-size: 12px;
+    }
+    .paso {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      align-items: flex-start;
+    }
+    .paso-numero {
+      width: 32px;
+      height: 32px;
+      background: #1a1a1a;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .paso-contenido h2 { font-size: 14px; margin-bottom: 6px; }
+    .paso-contenido p { font-size: 12px; color: #444; margin-bottom: 4px; }
+    .ruta {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-family: monospace;
+      font-size: 11px;
+      margin: 6px 0;
+      display: inline-block;
+    }
+    .valor {
+      background: #e8f5e9;
+      border: 1px solid #a5d6a7;
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: bold;
+      display: inline-block;
+    }
+    .separador {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 28px 0;
+    }
+    .version-bloque { margin-bottom: 20px; }
+    .version-titulo {
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+    .problema { margin-bottom: 14px; }
+    .problema strong { display: block; font-size: 12px; margin-bottom: 2px; }
+    .problema p { font-size: 12px; color: #444; }
+    .pie {
+      margin-top: 32px;
+      border-top: 1px solid #e5e7eb;
+      padding-top: 12px;
+      font-size: 10px;
+      color: #888;
+      text-align: center;
+    }
+    @media print {
+      body { padding: 20px; }
+      @page { margin: 2cm; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo-header">
+    <div>
+      <div class="logo-nombre">Rodo's 3.0</div>
+      <div class="logo-sub">Servicio técnico informático · La Plata, Buenos Aires</div>
+    </div>
+  </div>
+
+  <h1>Internet Segura para la Familia</h1>
+  <p class="bajada">Guía de configuración en Android · Entregada por Rodrigo durante la instalación</p>
+
+  <div class="aviso">
+    <strong>¿Para qué sirve esto?</strong> Esta configuración hace que el celular filtre automáticamente
+    sitios inapropiados, malware y phishing — incluso cuando tu hijo usa el WiFi de un amigo o datos móviles.
+    No requiere ninguna app instalada.
+  </div>
+
+  <!-- Android 9 y superior -->
+  <div class="version-bloque">
+    <div class="version-titulo">Android 9 o superior (la mayoría de los celulares actuales)</div>
+
+    <div class="paso">
+      <div class="paso-numero">1</div>
+      <div class="paso-contenido">
+        <h2>Ir a Configuración de red</h2>
+        <p>Abrí <strong>Ajustes</strong> del celular y buscá:</p>
+        <div class="ruta">Conexiones → Más ajustes de conexión → DNS privado</div>
+        <p>En algunos celulares el camino puede ser:</p>
+        <div class="ruta">Red e Internet → Avanzado → DNS privado</div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-numero">2</div>
+      <div class="paso-contenido">
+        <h2>Seleccionar "Nombre de host del proveedor de DNS privado"</h2>
+        <p>Tocá esa opción (no "Automático" ni "Desactivado").</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-numero">3</div>
+      <div class="paso-contenido">
+        <h2>Ingresar el servidor seguro</h2>
+        <p>Escribí exactamente este valor:</p>
+        <div class="valor">family.cloudflare-dns.com</div>
+        <p style="margin-top:8px">Guardá y cerrá. El celular va a conectar al servidor seguro automáticamente.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-numero">4</div>
+      <div class="paso-contenido">
+        <h2>Verificar que funciona</h2>
+        <p>Abrí el navegador e intentá entrar a un sitio inapropiado. Si aparece una página de bloqueo, la configuración está activa.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="separador">
+
+  <!-- Android 8 o inferior -->
+  <div class="version-bloque">
+    <div class="version-titulo">Android 8 o inferior (celulares más antiguos)</div>
+    <p style="font-size:12px; color:#444; margin-bottom:12px">
+      En versiones anteriores no existe el DNS Privado nativo. En ese caso Rodrigo instala la app
+      <strong>AdGuard</strong> que cumple la misma función. Si este es tu caso, no necesitás hacer nada vos —
+      quedó configurada durante la visita.
+    </p>
+  </div>
+
+  <hr class="separador">
+
+  <div class="version-bloque">
+    <div class="version-titulo">Si algo no funciona</div>
+
+    <div class="problema">
+      <strong>El celular no acepta el nombre del servidor</strong>
+      <p>Asegurate de escribirlo sin espacios ni mayúsculas: <span class="valor">family.cloudflare-dns.com</span></p>
+    </div>
+    <div class="problema">
+      <strong>No encuentro la opción "DNS privado"</strong>
+      <p>Usá el buscador dentro de Ajustes y escribí "DNS". Si no aparece, el celular tiene Android 8 o inferior — contactá a Rodrigo.</p>
+    </div>
+    <div class="problema">
+      <strong>Un sitio que debería estar bloqueado pasa igual</strong>
+      <p>Algunos sitios usan sus propios servidores DNS. En ese caso se necesita la app AdGuard para un bloqueo más completo. Consultá con Rodrigo.</p>
+    </div>
+  </div>
+
+  <div class="pie">
+    Rodo's 3.0 · La Plata, Buenos Aires · wa.me/5492215069677<br>
+    Para consultas o ajustes de configuración, escribinos por WhatsApp.
+  </div>
+
+</body>
+</html>

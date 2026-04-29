@@ -63,12 +63,21 @@ const HERRAMIENTAS: {
   },
   {
     icono: ShieldCheck,
-    nombre: "Internet Segura para la Familia",
+    nombre: "Internet Segura — Windows",
     descripcion:
       "Activá el filtro de contenido en tu PC con un doble clic. Bloquea sitios para adultos, malware y phishing automáticamente. Sin instalación, sin configuración técnica.",
     etiqueta: "Windows · .bat",
     color: "blue",
     href: "/tools/internet-segura-windows.bat",
+  },
+  {
+    icono: ShieldCheck,
+    nombre: "Internet Segura — iPhone y iPad",
+    descripcion:
+      "Perfil de configuración para iOS. Lo abrís desde Safari, lo aceptás una vez y el filtro queda activo en el dispositivo. Funciona con cualquier red WiFi o datos móviles.",
+    etiqueta: "iOS · .mobileconfig",
+    color: "orange",
+    href: "/tools/internet-segura-ios.mobileconfig",
   },
   {
     icono: FileText,
