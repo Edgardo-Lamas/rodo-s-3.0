@@ -6,6 +6,9 @@ import {
   Activity,
   MessageCircle,
   Check,
+  EyeOff,
+  KeyRound,
+  ShieldCheck,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -309,6 +312,104 @@ export default function RedFamiliar() {
                 </a>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* ── Privacidad ── */}
+        <div className="mb-14">
+          <div
+            className="h-px mb-14"
+            style={{
+              background:
+                "linear-gradient(to right, transparent, rgba(74,158,255,0.3), transparent)",
+            }}
+            aria-hidden="true"
+          />
+
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-blue/10 border border-brand-blue/20 mb-5">
+              <ShieldCheck size={22} className="text-brand-blue" aria-hidden="true" />
+            </div>
+            <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+              ¿Cómo protegemos tu privacidad?
+            </h3>
+            <p className="text-gray-400 text-base max-w-2xl mx-auto leading-relaxed">
+              Tu historial de navegación es tuyo. Rodrigo configura el sistema y
+              se va — no guarda, no ve ni tiene acceso a lo que hacen en tu red.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+            {/* Garantía 1 */}
+            <div className="flex flex-col gap-4 rounded-2xl border border-brand-blue/15 bg-brand-blue/5 p-7">
+              <div className="w-11 h-11 rounded-xl bg-brand-blue/10 flex items-center justify-center shrink-0">
+                <EyeOff size={20} className="text-brand-blue" aria-hidden="true" />
+              </div>
+              <div>
+                <h4 className="text-white font-semibold text-base mb-2">
+                  Rodrigo no ve tu tráfico
+                </h4>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  El sistema funciona cambiando el DNS del router. El tráfico de
+                  tu casa va directo a los servidores de filtrado — no pasa por
+                  ningún servidor de Rodrigo. Técnicamente es imposible que
+                  intercepte tu navegación.
+                </p>
+              </div>
+            </div>
+
+            {/* Garantía 2 */}
+            <div className="flex flex-col gap-4 rounded-2xl border border-brand-blue/15 bg-brand-blue/5 p-7">
+              <div className="w-11 h-11 rounded-xl bg-brand-blue/10 flex items-center justify-center shrink-0">
+                <KeyRound size={20} className="text-brand-blue" aria-hidden="true" />
+              </div>
+              <div>
+                <h4 className="text-white font-semibold text-base mb-2">
+                  Las credenciales son tuyas
+                </h4>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  El panel donde ves los reportes lo abrís vos, con tu propio
+                  email y contraseña. Rodrigo no guarda esas claves. Podés
+                  cambiarlas cuando quieras y él queda sin acceso — eso es
+                  la garantía más concreta que podemos darte.
+                </p>
+              </div>
+            </div>
+
+            {/* Garantía 3 */}
+            <div className="flex flex-col gap-4 rounded-2xl border border-brand-blue/15 bg-brand-blue/5 p-7">
+              <div className="w-11 h-11 rounded-xl bg-brand-blue/10 flex items-center justify-center shrink-0">
+                <ShieldCheck size={20} className="text-brand-blue" aria-hidden="true" />
+              </div>
+              <div>
+                <h4 className="text-white font-semibold text-base mb-2">
+                  Sin historial almacenado
+                </h4>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  El sistema se configura para no guardar logs de navegación.
+                  Los reportes se generan en tiempo real y no se archivan.
+                  Nadie — ni Rodrigo ni el servicio de filtrado — tiene un
+                  registro de qué sitios visitó tu familia.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Nota legal */}
+          <div
+            className="rounded-xl border border-white/8 px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-3"
+            style={{ background: "rgba(255,255,255,0.02)" }}
+          >
+            <Shield size={15} className="text-gray-500 shrink-0 mt-0.5 sm:mt-0" aria-hidden="true" />
+            <p className="text-gray-500 text-xs leading-relaxed">
+              <span className="text-gray-400 font-medium">Marco legal — </span>
+              Este servicio opera bajo la{" "}
+              <span className="text-gray-400">Ley 25.326 de Protección de Datos Personales</span>{" "}
+              de Argentina. Rodrigo actúa como configurador técnico, sin
+              tratamiento ni retención de datos personales de navegación. Al
+              contratar el servicio recibís un documento que lo establece por
+              escrito.
+            </p>
           </div>
         </div>
 
