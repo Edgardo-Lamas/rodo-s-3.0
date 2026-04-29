@@ -350,10 +350,10 @@ export default function RedFamiliar() {
                   Tráfico invisible para terceros
                 </h4>
                 <p className="text-gray-400 text-sm leading-relaxed">
-                  El sistema opera cambiando el DNS del router. La navegación
-                  de tu casa va directo a los servidores de filtrado, sin pasar
-                  por ningún servidor externo. Por arquitectura, es técnicamente
-                  imposible que alguien ajeno intercepte tu tráfico.
+                  La navegación de tu familia no es accesible para nadie fuera
+                  de tu hogar. El sistema está diseñado para que ningún tercero
+                  pueda ver, registrar ni interceptar lo que hacen los
+                  dispositivos de tu red.
                 </p>
               </div>
             </div>
