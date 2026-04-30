@@ -45,7 +45,7 @@ export default function Hero() {
           {/* Col izquierda — texto */}
           <div>
             <p className="animate-fade-up delay-100 text-brand-orange text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] mb-5">
-              Técnico informático · +15 años
+              Técnico informático en La Plata · +15 años
             </p>
 
             <h1 className="animate-fade-up delay-200 text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.05] tracking-tight text-balance mb-6">
