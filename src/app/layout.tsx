@@ -6,7 +6,7 @@ import Footer from "@/components/layout/Footer";
 import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
 import { PageTracker } from "@/components/PageTracker";
 
-const SITE_URL = "https://rodo-s-3-0.vercel.app"; // TODO: actualizar cuando Rodrigo tenga dominio propio
+const SITE_URL = "https://rodostech.vercel.app"; // actualizar a dominio propio cuando esté disponible
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
