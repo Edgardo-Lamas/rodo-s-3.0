@@ -5,7 +5,7 @@ export const alt         = "Rodo's 3.0 — Técnico informático en La Plata";
 export const size        = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function Image() {
+export default async function Image() {
   return new ImageResponse(
     (
       <div
