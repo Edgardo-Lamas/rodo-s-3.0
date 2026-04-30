@@ -55,6 +55,8 @@ const FEATURES: {
 const PLANES: {
   nombre: string;
   tipo: string;
+  precio: string;
+  precioSub: string;
   descripcion: string;
   bullets: string[];
   destacado: boolean;
@@ -62,12 +64,14 @@ const PLANES: {
   {
     nombre: "Instalación",
     tipo: "Pago único",
+    precio: "$80.000",
+    precioSub: "una sola vez",
     descripcion:
-      "El hardware y la configuración inicial. Protección real desde el primer día.",
+      "Configuración completa en tu hogar. Protección real desde el primer día.",
     bullets: [
-      "Kit Raspberry Pi + instalación",
-      "AdGuard Home configurado",
-      "Filtros personalizados por dispositivo",
+      "Configuración del router del hogar",
+      "Todos los dispositivos de casa cubiertos",
+      "Filtros personalizados según tus hijos",
       "Prueba funcional garantizada",
     ],
     destacado: false,
@@ -75,11 +79,13 @@ const PLANES: {
   {
     nombre: "Abono Básico",
     tipo: "Mensual",
+    precio: "$18.000",
+    precioSub: "por mes",
     descripcion:
-      "Para quienes ya tienen el sistema y quieren mantenerlo siempre actualizado.",
+      "Mantenimiento continuo para que el sistema nunca quede desactualizado.",
     bullets: [
       "Actualización mensual de filtros",
-      "Soporte por WhatsApp",
+      "Soporte por WhatsApp en el día",
       "Monitoreo remoto del sistema",
     ],
     destacado: false,
@@ -87,12 +93,14 @@ const PLANES: {
   {
     nombre: "Abono Completo",
     tipo: "Mensual",
+    precio: "$35.000",
+    precioSub: "por mes",
     descripcion:
-      "Protección extendida que sigue a los chicos también fuera de casa.",
+      "Protección que sigue a tus hijos también fuera de casa.",
     bullets: [
       "Todo lo del Abono Básico",
-      "VPN en dispositivos móviles",
-      "Reportes mensuales de actividad",
+      "Celulares y tablets protegidos fuera del hogar",
+      "Dashboard de actividad para los padres",
       "Ajustes de configuración incluidos",
     ],
     destacado: true,
@@ -274,9 +282,30 @@ export default function RedFamiliar() {
                 >
                   {plan.tipo}
                 </p>
-                <h4 className="text-white font-bold text-xl mb-3">
+                <h4 className="text-white font-bold text-xl mb-4">
                   {plan.nombre}
                 </h4>
+
+                {/* Precio */}
+                <div className="flex items-baseline gap-2 mb-4">
+                  <span
+                    className={`text-3xl font-bold tracking-tight ${
+                      plan.destacado ? "text-brand-blue" : "text-white"
+                    }`}
+                  >
+                    {plan.precio}
+                  </span>
+                  <span className="text-gray-500 text-sm">{plan.precioSub}</span>
+                </div>
+
+                <div
+                  className={`h-px mb-5 ${
+                    plan.destacado
+                      ? "bg-brand-blue/20"
+                      : "bg-white/8"
+                  }`}
+                />
+
                 <p className="text-gray-400 text-sm leading-relaxed mb-6">
                   {plan.descripcion}
                 </p>
@@ -300,7 +329,7 @@ export default function RedFamiliar() {
                   href={WHATSAPP_RED}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`Consultar precio de ${plan.nombre}`}
+                  aria-label={`Consultar ${plan.nombre} por WhatsApp`}
                   className={`inline-flex items-center justify-center gap-2 font-semibold text-sm px-5 py-2.5 rounded-full border transition-all duration-200 ${
                     plan.destacado
                       ? "bg-brand-blue text-white border-brand-blue hover:brightness-110 hover:scale-105"
@@ -308,7 +337,7 @@ export default function RedFamiliar() {
                   }`}
                 >
                   <MessageCircle size={15} aria-hidden="true" />
-                  Consultar precio
+                  Consultar por WhatsApp
                 </a>
               </div>
             ))}
