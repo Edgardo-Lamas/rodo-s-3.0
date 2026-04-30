@@ -44,15 +44,14 @@ export const metadata: Metadata = {
     locale: "es_AR",
     siteName: "Rodo's 3.0",
     url: SITE_URL,
-    // TODO: reemplazar og-image.svg por og-image.png real (1200x630) cuando Rodrigo apruebe el diseño
-    images: [{ url: "/og-image.svg", width: 1200, height: 630, alt: "Rodo's 3.0 — Soluciones informáticas para el día a día" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Rodo's 3.0 — Técnico informático en La Plata" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Rodo's 3.0 — Soluciones informáticas para el día a día",
     description:
       "Técnico informático con más de 15 años de experiencia en La Plata. Reparación de PC, antivirus, backups, soporte a domicilio/remoto y desarrollo web.",
-    images: ["/og-image.svg"],
+    images: ["/opengraph-image"],
   },
   alternates: { canonical: SITE_URL },
 };
