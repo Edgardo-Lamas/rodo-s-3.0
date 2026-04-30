@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contrato de Servicio Técnico — Rodo's 3.0</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 13px;
+      color: #1a1a1a;
+      background: #fff;
+      padding: 40px;
+      max-width: 780px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+    .logo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #1a1a1a;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+    }
+    .logo-nombre { font-size: 20px; font-weight: bold; letter-spacing: -0.5px; }
+    .logo-sub { font-size: 11px; color: #555; margin-top: 2px; }
+    .doc-ref { text-align: right; font-size: 11px; color: #555; line-height: 1.9; }
+    h1 {
+      font-size: 16px;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .subtitulo { text-align: center; font-size: 12px; color: #555; margin-bottom: 28px; }
+    h2 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 24px 0 10px;
+      border-left: 3px solid #1a1a1a;
+      padding-left: 8px;
+    }
+    p { margin-bottom: 8px; text-align: justify; }
+    .partes {
+      background: #f7f7f7;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 16px 20px;
+      margin: 16px 0;
+    }
+    .parte { margin-bottom: 12px; }
+    .parte:last-child { margin-bottom: 0; }
+    .parte strong { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #777; margin-bottom: 3px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 12px;
+    }
+    th {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 8px 10px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: normal;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    td { padding: 8px 10px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #f9fafb; }
+    ul { margin: 6px 0 8px 18px; }
+    ul li { margin-bottom: 4px; font-size: 12px; }
+    .alerta {
+      background: #fff8e1;
+      border-left: 4px solid #f59e0b;
+      padding: 12px 16px;
+      border-radius: 0 4px 4px 0;
+      margin: 12px 0;
+      font-size: 12px;
+    }
+    .alerta strong { display: block; margin-bottom: 4px; }
+    .requisitos-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 12px 0;
+    }
+    .req-bloque {
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      padding: 12px 14px;
+    }
+    .req-titulo {
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #555;
+      margin-bottom: 6px;
+    }
+    .req-bloque ul { margin-left: 14px; }
+    .req-bloque li { font-size: 11px; color: #333; margin-bottom: 3px; }
+    .nota-velocidad {
+      background: #e8f4fd;
+      border-left: 4px solid #3b82f6;
+      padding: 10px 14px;
+      font-size: 11px;
+      border-radius: 0 4px 4px 0;
+      margin-top: 10px;
+      color: #1e3a5f;
+    }
+    .firmas {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+    .firma-bloque { border-top: 1px solid #1a1a1a; padding-top: 10px; }
+    .firma-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #555; }
+    .firma-campo { margin-top: 14px; }
+    .firma-campo span { font-size: 11px; color: #777; display: block; margin-bottom: 2px; }
+    .firma-linea { border-bottom: 1px solid #999; margin-bottom: 12px; height: 24px; }
+    .pie {
+      margin-top: 32px;
+      border-top: 1px solid #ddd;
+      padding-top: 12px;
+      font-size: 10px;
+      color: #888;
+      text-align: center;
+    }
+    @media print {
+      body { padding: 20px; font-size: 12px; }
+      @page { margin: 1.8cm; }
+      .requisitos-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo-header">
+    <div>
+      <div class="logo-nombre">Rodo's 3.0</div>
+      <div class="logo-sub">Servicio técnico informático · La Plata, Buenos Aires</div>
+    </div>
+    <div class="doc-ref">
+      Contrato N°: ________<br>
+      Fecha de inicio: ________________<br>
+      Plan contratado: ________________
+    </div>
+  </div>
+
+  <h1>Contrato de Servicio Técnico</h1>
+  <p class="subtitulo">Internet Segura para la Familia — Términos, garantías y condiciones</p>
+
+  <!-- PARTES -->
+  <h2>1. Partes del contrato</h2>
+  <div class="partes">
+    <div class="parte">
+      <strong>Prestador del servicio</strong>
+      Rodrigo __________________________, técnico informático, CUIT/DNI __________________, domicilio profesional en La Plata, Buenos Aires. En adelante <em>El Técnico</em>.
+    </div>
+    <div class="parte">
+      <strong>Cliente</strong>
+      __________________________________, DNI __________________, domicilio ______________________________________________, teléfono ____________________, email ____________________________. En adelante <em>El Cliente</em>.
+    </div>
+  </div>
+
+  <!-- PLANES -->
+  <h2>2. Alcance del servicio según plan contratado</h2>
+  <table>
+    <tr>
+      <th>Plan</th>
+      <th>Tipo</th>
+      <th>Incluye</th>
+    </tr>
+    <tr>
+      <td><strong>Instalación</strong></td>
+      <td>Pago único</td>
+      <td>
+        Configuración del router del hogar. Protección de todos los dispositivos conectados a la red doméstica.
+        Prueba funcional garantizada al momento de la entrega.
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Abono Básico</strong></td>
+      <td>Mensual</td>
+      <td>
+        Mantenimiento y actualización del sistema. Soporte por WhatsApp en días hábiles de 9 a 20 hs.
+        Tiempo de respuesta: hasta 24 horas hábiles.
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Abono Completo</strong></td>
+      <td>Mensual</td>
+      <td>
+        Todo lo del Abono Básico. Configuración de filtros en celulares y tablets (dentro y fuera del hogar).
+        Dashboard de actividad para los padres con vista en tiempo real. Tiempo de respuesta: hasta 12 horas hábiles.
+        Ajustes de configuración incluidos sin cargo adicional.
+      </td>
+    </tr>
+  </table>
+
+  <p style="font-size:11px; color:#555; margin-top:6px">
+    El soporte cubre únicamente fallas del sistema instalado por El Técnico. No incluye reparación de
+    hardware, problemas de conectividad del ISP ni configuraciones realizadas por terceros.
+  </p>
+
+  <!-- GARANTÍAS -->
+  <h2>3. Garantías del servicio</h2>
+  <p>El Técnico garantiza:</p>
+  <ul>
+    <li>El correcto funcionamiento del sistema al momento de finalizar la instalación, verificado con prueba funcional en presencia del Cliente.</li>
+    <li>Que ante una falla del sistema imputable a la configuración realizada por El Técnico, la corrección se realizará sin cargo adicional dentro de los plazos establecidos en el plan.</li>
+    <li>Que las actualizaciones necesarias para mantener el sistema operativo están incluidas en los planes de abono.</li>
+    <li>Disponibilidad del servicio de soporte durante los días y horarios indicados en el plan contratado.</li>
+  </ul>
+
+  <!-- PÉRDIDA DE GARANTÍA -->
+  <h2>4. Pérdida de garantía</h2>
+  <div class="alerta">
+    <strong>La garantía queda sin efecto en los siguientes casos:</strong>
+    <ul style="margin-top:6px">
+      <li>Modificación de la configuración de red o DNS por parte del Cliente o cualquier miembro del hogar sin coordinación previa con El Técnico.</li>
+      <li>Reseteo del router a valores de fábrica.</li>
+      <li>Sustitución del router por otro equipo sin notificar a El Técnico.</li>
+      <li>Eliminación del perfil de configuración en celulares o tablets.</li>
+      <li>Instalación de aplicaciones de VPN o herramientas que modifiquen el tráfico de red en los dispositivos protegidos.</li>
+      <li>Cambio de la contraseña de administrador del sistema operativo Windows sin coordinación con El Técnico.</li>
+      <li>Fallas causadas por cortes o inestabilidad del servicio de internet del ISP contratado por el Cliente.</li>
+      <li>Daños físicos en el hardware del hogar (router, computadoras, dispositivos móviles).</li>
+    </ul>
+  </div>
+  <p>
+    En caso de pérdida de garantía, la reconfiguración del sistema tendrá un costo adicional a convenir
+    entre las partes antes de realizarse el trabajo.
+  </p>
+
+  <!-- REQUISITOS TÉCNICOS -->
+  <h2>5. Requisitos técnicos mínimos</h2>
+  <p>
+    El Cliente declara conocer que el servicio requiere que los dispositivos del hogar cumplan con las
+    siguientes condiciones mínimas. El Técnico evaluará el cumplimiento durante la visita de instalación.
+  </p>
+
+  <div class="requisitos-grid">
+    <div class="req-bloque">
+      <div class="req-titulo">Router</div>
+      <ul>
+        <li>Panel de administración accesible (no bloqueado por el ISP)</li>
+        <li>Configuración DHCP editable</li>
+        <li>Firmware actualizado en los últimos 3 años</li>
+      </ul>
+    </div>
+    <div class="req-bloque">
+      <div class="req-titulo">Windows</div>
+      <ul>
+        <li>Windows 10 o superior</li>
+        <li>Cuenta con permisos de administrador disponible</li>
+        <li>Sin software de seguridad empresarial que bloquee cambios de red</li>
+      </ul>
+    </div>
+    <div class="req-bloque">
+      <div class="req-titulo">iPhone / iPad</div>
+      <ul>
+        <li>iOS / iPadOS 14 o superior</li>
+        <li>Función Screen Time disponible</li>
+        <li>Acceso al ID de Apple del dispositivo durante la instalación</li>
+      </ul>
+    </div>
+    <div class="req-bloque">
+      <div class="req-titulo">Android</div>
+      <ul>
+        <li>Android 9 o superior (recomendado)</li>
+        <li>Cuenta Google activa en el dispositivo</li>
+        <li>Android 8 o inferior requiere instalación de app adicional</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="nota-velocidad">
+    <strong>Aclaración sobre la velocidad de internet:</strong> El sistema de filtrado no afecta la
+    velocidad de descarga ni de subida del hogar. Opera únicamente a nivel de resolución de nombres de
+    dominio, proceso que toma milisegundos y no interfiere con la transferencia de datos. Se recomienda
+    una conexión de al menos <strong>10 Mbps</strong> para una experiencia de uso fluida, requisito
+    independiente del servicio contratado y que depende exclusivamente del plan de internet del Cliente.
+  </div>
+
+  <!-- CONDICIONES COMERCIALES -->
+  <h2>6. Condiciones comerciales</h2>
+  <table>
+    <tr>
+      <th>Concepto</th>
+      <th>Condición</th>
+    </tr>
+    <tr>
+      <td><strong>Pago</strong></td>
+      <td>El abono mensual se abona los primeros 5 días hábiles de cada mes. El pago de la instalación es previo a la realización del trabajo o al finalizar la misma, según se acuerde.</td>
+    </tr>
+    <tr>
+      <td><strong>Atraso en el pago</strong></td>
+      <td>Ante atraso mayor a 10 días corridos, El Técnico podrá suspender el servicio de soporte hasta regularizar la situación. No se aplican penalidades económicas.</td>
+    </tr>
+    <tr>
+      <td><strong>Rescisión</strong></td>
+      <td>Cualquiera de las partes puede rescindir el contrato con un preaviso de 15 días corridos comunicado por escrito (WhatsApp o email).</td>
+    </tr>
+    <tr>
+      <td><strong>Al rescindir</strong></td>
+      <td>La configuración instalada permanece en los dispositivos del Cliente. El Técnico no tiene obligación de revertirla, salvo que el Cliente lo solicite expresamente y se acuerde un presupuesto para ello.</td>
+    </tr>
+    <tr>
+      <td><strong>Modificaciones del servicio</strong></td>
+      <td>El Técnico podrá modificar los términos del servicio con 30 días de anticipación. El Cliente podrá rescindir sin penalidad si no acepta los nuevos términos.</td>
+    </tr>
+  </table>
+
+  <!-- MARCO LEGAL -->
+  <h2>7. Marco legal</h2>
+  <p>
+    El presente contrato se rige por las leyes de la República Argentina, en particular la
+    <strong>Ley N° 24.240 de Defensa del Consumidor</strong> y sus modificatorias.
+    Cualquier divergencia que no pueda resolverse entre las partes será sometida a los tribunales
+    ordinarios de la ciudad de La Plata, Provincia de Buenos Aires, con renuncia expresa a cualquier
+    otro fuero o jurisdicción.
+  </p>
+  <p>
+    La privacidad y el tratamiento de datos personales se rigen por un documento específico
+    (<em>Acuerdo de Privacidad y Confidencialidad</em>) que forma parte integrante de este contrato
+    y se firma conjuntamente.
+  </p>
+
+  <!-- FIRMAS -->
+  <div class="firmas">
+    <div class="firma-bloque">
+      <div class="firma-label">El Técnico — Rodo's 3.0</div>
+      <div class="firma-campo">
+        <div class="firma-linea"></div>
+        <span>Nombre, apellido y firma</span>
+      </div>
+      <div class="firma-campo">
+        <div class="firma-linea"></div>
+        <span>Aclaración · DNI</span>
+      </div>
+    </div>
+    <div class="firma-bloque">
+      <div class="firma-label">El Cliente</div>
+      <div class="firma-campo">
+        <div class="firma-linea"></div>
+        <span>Nombre, apellido y firma</span>
+      </div>
+      <div class="firma-campo">
+        <div class="firma-linea"></div>
+        <span>Aclaración · DNI</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pie">
+    Rodo's 3.0 · La Plata, Buenos Aires · wa.me/5492215069677<br>
+    Se firman dos ejemplares de igual tenor y valor, uno para cada parte.
+  </div>
+
+</body>
+</html>
