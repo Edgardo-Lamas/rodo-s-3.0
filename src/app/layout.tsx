@@ -44,14 +44,14 @@ export const metadata: Metadata = {
     locale: "es_AR",
     siteName: "Rodo's 3.0",
     url: SITE_URL,
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Rodo's 3.0 — Técnico informático en La Plata" }],
+    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "Rodo's 3.0 — Técnico informático en La Plata" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Rodo's 3.0 — Soluciones informáticas para el día a día",
     description:
       "Técnico informático con más de 15 años de experiencia en La Plata. Reparación de PC, antivirus, backups, soporte a domicilio/remoto y desarrollo web.",
-    images: ["/opengraph-image"],
+    images: [`${SITE_URL}/opengraph-image`],
   },
   alternates: { canonical: SITE_URL },
 };
