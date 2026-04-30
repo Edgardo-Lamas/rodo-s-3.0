@@ -218,7 +218,7 @@ export default function RedFamiliarTab() {
       ) : clientes.length === 0 ? (
         <div style={{ background: "#1C1C1E", border: "1px solid #2C2C2E", borderRadius: 6, padding: 32, textAlign: "center" }}>
           <p style={{ fontSize: 13, color: "#4B5563" }}>No hay familias registradas aún.</p>
-          <p style={{ fontSize: 12, color: "#374151", marginTop: 4 }}>Hacé click en "Nueva familia" para agregar la primera.</p>
+          <p style={{ fontSize: 12, color: "#374151", marginTop: 4 }}>Hacé click en &ldquo;Nueva familia&rdquo; para agregar la primera.</p>
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>

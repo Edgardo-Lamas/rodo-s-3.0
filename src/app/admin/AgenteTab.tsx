@@ -90,7 +90,7 @@ export default function AgenteTab() {
       {!analisis && !loading && (
         <div style={{ background: "#161618", border: "1px dashed #2C2C2E", borderRadius: 6, padding: "48px 24px", textAlign: "center" }}>
           <Sparkles size={24} color="#2C2C2E" style={{ marginBottom: 12 }} />
-          <p style={{ fontSize: 13, color: "#374151", margin: 0 }}>Tocá "Generar análisis" para obtener recomendaciones basadas en los datos reales del sitio</p>
+          <p style={{ fontSize: 13, color: "#374151", margin: 0 }}>Tocá &ldquo;Generar análisis&rdquo; para obtener recomendaciones basadas en los datos reales del sitio</p>
         </div>
       )}
 
