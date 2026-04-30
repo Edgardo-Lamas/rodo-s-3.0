@@ -8,6 +8,7 @@ import { RefreshCw, TrendingUp, MousePointerClick, Download, MessageCircle, Perc
 import type { LucideIcon } from "lucide-react";
 import AgenteTab from "./AgenteTab";
 import ConsultasTab from "./ConsultasTab";
+import RedFamiliarTab from "./RedFamiliarTab";
 
 interface StatsData {
   kpis: {
@@ -129,8 +130,9 @@ export default function AdminDashboard() {
           {[
             { key: "panel",     label: "Panel" },
             { key: "consultas", label: `Consultas${data?.kpis.consultasNuevas ? ` (${data.kpis.consultasNuevas})` : ""}` },
-            { key: "leads",     label: `Leads${data?.kpis.leads7d ? ` (${data.kpis.leads7d})` : ""}` },
-            { key: "agente",    label: "✦ Agente" },
+            { key: "leads",       label: `Leads${data?.kpis.leads7d ? ` (${data.kpis.leads7d})` : ""}` },
+            { key: "red-familiar", label: "🛡 Red Familiar" },
+            { key: "agente",      label: "✦ Agente" },
           ].map((t) => (
             <button key={t.key} onClick={() => setTab(t.key)} style={{
               padding: "8px 18px", fontSize: 13, fontWeight: 500, cursor: "pointer",
@@ -144,6 +146,7 @@ export default function AdminDashboard() {
           ))}
         </div>
 
+        {tab === "red-familiar" && <RedFamiliarTab />}
         {tab === "agente" && <AgenteTab />}
         {tab === "consultas" && data && <ConsultasTab consultas={data.consultas} />}
         {tab === "leads" && data && (

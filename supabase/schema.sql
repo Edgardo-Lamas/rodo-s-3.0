@@ -73,6 +73,29 @@ create policy "insertar_lead" on leads
 
 -- ─── 4. USERS (solo admin: Rodrigo) ──────────────────────────────
 
+-- ─── 5. CLIENTES RED FAMILIAR ────────────────────────────────────────
+
+create table if not exists clientes_red_familiar (
+  id                  uuid primary key default gen_random_uuid(),
+  nombre_familia      text not null,
+  token               text not null unique,
+  nextdns_profile_id  text,
+  email               text,
+  telefono            text,
+  notas               text,
+  activo              boolean not null default true,
+  created_at          timestamptz default now()
+);
+
+create index if not exists red_familiar_token_idx on clientes_red_familiar (token);
+create index if not exists red_familiar_activo_idx on clientes_red_familiar (activo);
+
+alter table clientes_red_familiar enable row level security;
+-- Solo service role puede leer/escribir — sin acceso anon
+
+
+-- ─── 6. USERS (solo admin: Rodrigo) ──────────────────────────────────
+
 create table if not exists users (
   id            uuid primary key default gen_random_uuid(),
   email         text not null unique,
