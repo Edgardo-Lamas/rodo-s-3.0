@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-Sitemap: https://rodostech.vercel.app/sitemap.xml
+Sitemap: https://rodo-s-3-0.vercel.app/sitemap.xml
