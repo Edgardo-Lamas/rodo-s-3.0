@@ -1,102 +1,221 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { Sparkles, RefreshCw, Copy, Check } from "lucide-react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { Sparkles, Send, BarChart2 } from "lucide-react";
 
-function MarkdownBlock({ text }: { text: string }) {
-  if (!text) return null;
+type Message = { role: "user" | "assistant"; content: string; display?: string };
+
+function MarkdownLine({ line }: { line: string }) {
+  if (line.startsWith("## "))
+    return <p style={{ fontSize: 13, fontWeight: 700, color: "#F9FAFB", margin: "14px 0 5px" }}>{line.slice(3)}</p>;
+  if (line.startsWith("**") && line.endsWith("**"))
+    return <p style={{ fontSize: 13, fontWeight: 600, color: "#E5E7EB", margin: "3px 0" }}>{line.slice(2, -2)}</p>;
+  if (line.startsWith("- "))
+    return <p style={{ fontSize: 13, color: "#9CA3AF", margin: "2px 0", paddingLeft: 12, borderLeft: "2px solid #2C2C2E" }}>{line.slice(2)}</p>;
+  if (line.trim() === "")
+    return <div style={{ height: 4 }} />;
+  return <p style={{ fontSize: 13, color: "#D1D5DB", margin: "2px 0", lineHeight: 1.65 }}>{line}</p>;
+}
+
+function BubbleAssistant({ content, streaming }: { content: string; streaming?: boolean }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-      {text.split("\n").map((line, i) => {
-        if (line.startsWith("## "))
-          return <p key={i} style={{ fontSize: 13, fontWeight: 700, color: "#F9FAFB", margin: "16px 0 6px" }}>{line.replace("## ", "")}</p>;
-        if (line.startsWith("- "))
-          return <p key={i} style={{ fontSize: 13, color: "#9CA3AF", margin: "2px 0", paddingLeft: 12, borderLeft: "2px solid #2C2C2E" }}>{line.replace("- ", "")}</p>;
-        if (line.trim() === "")
-          return <div key={i} style={{ height: 4 }} />;
-        return <p key={i} style={{ fontSize: 13, color: "#D1D5DB", margin: "2px 0", lineHeight: 1.65 }}>{line}</p>;
-      })}
+    <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+      <div style={{ flexShrink: 0, width: 28, height: 28, borderRadius: "50%", background: "#1C1C1E", border: "1px solid #2C2C2E", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Sparkles size={13} color="#e8820a" />
+      </div>
+      <div style={{ flex: 1, background: "#1C1C1E", border: "1px solid #2C2C2E", borderRadius: "4px 12px 12px 12px", padding: "12px 16px", maxWidth: "85%" }}>
+        {content
+          ? content.split("\n").map((line, i) => <MarkdownLine key={i} line={line} />)
+          : <p style={{ fontSize: 13, color: "#4B5563", margin: 0 }}>…</p>
+        }
+        {streaming && (
+          <span style={{ display: "inline-block", width: 7, height: 13, background: "#e8820a", borderRadius: 1, animation: "blink 0.8s step-end infinite", marginLeft: 2, verticalAlign: "middle" }} />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function BubbleUser({ content }: { content: string }) {
+  return (
+    <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div style={{ background: "#e8820a", borderRadius: "12px 4px 12px 12px", padding: "10px 14px", maxWidth: "75%" }}>
+        <p style={{ fontSize: 13, color: "#fff", margin: 0, lineHeight: 1.5 }}>{content}</p>
+      </div>
+    </div>
+  );
+}
+
+function EmptyState({ onAnalisis }: { onAnalisis: () => void }) {
+  return (
+    <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20, padding: 32 }}>
+      <div style={{ width: 48, height: 48, borderRadius: "50%", background: "#1C1C1E", border: "1px solid #2C2C2E", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Sparkles size={20} color="#e8820a" />
+      </div>
+      <div style={{ textAlign: "center" }}>
+        <p style={{ fontSize: 14, fontWeight: 600, color: "#E5E7EB", margin: "0 0 6px" }}>Agente de estrategia</p>
+        <p style={{ fontSize: 12, color: "#4B5563", margin: 0, maxWidth: 300 }}>Preguntá lo que quieras sobre el negocio, o pedí un análisis completo de los datos del sitio.</p>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8, width: "100%", maxWidth: 340 }}>
+        {[
+          { icon: <BarChart2 size={13} />, label: "Analizar datos del sitio", fn: onAnalisis },
+        ].map(({ icon, label, fn }) => (
+          <button key={label} onClick={fn}
+            style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 14px", borderRadius: 8, border: "1px solid #2C2C2E", background: "#1C1C1E", color: "#D1D5DB", fontSize: 12, cursor: "pointer", textAlign: "left" }}>
+            <span style={{ color: "#e8820a" }}>{icon}</span>{label}
+          </button>
+        ))}
+        <p style={{ fontSize: 11, color: "#374151", margin: "4px 0 0", textAlign: "center" }}>
+          O escribí tu pregunta abajo — ¿qué precio cobro? ¿qué publicar esta semana?
+        </p>
+      </div>
     </div>
   );
 }
 
 export default function AgenteTab() {
-  const [analisis, setAnalisis] = useState("");
-  const [loading, setLoading]   = useState(false);
-  const [copiado, setCopiado]   = useState(false);
-  const [fecha, setFecha]       = useState<string | null>(null);
-  const abortRef                = useRef<AbortController | null>(null);
+  const [messages, setMessages]   = useState<Message[]>([]);
+  const [input, setInput]         = useState("");
+  const [streaming, setStreaming] = useState(false);
+  const abortRef  = useRef<AbortController | null>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const inputRef  = useRef<HTMLTextAreaElement>(null);
 
-  async function generarAnalisis() {
-    if (loading) { abortRef.current?.abort(); return; }
-    setLoading(true); setAnalisis(""); setFecha(null);
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const send = useCallback(async (texto: string, displayText?: string) => {
+    if (streaming || !texto.trim()) return;
+
+    const userDisplay = displayText ?? texto;
+    const historialParaAPI = messages.map((m) => ({
+      role: m.role,
+      content: m.role === "user" && m.content === "__analisis__"
+        ? "(análisis de negocio solicitado)"
+        : m.content,
+    }));
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "user", content: texto, display: userDisplay },
+      { role: "assistant", content: "" },
+    ]);
+    setInput("");
+    setStreaming(true);
+
     const controller = new AbortController();
     abortRef.current = controller;
+
     try {
-      const res = await fetch("/api/admin/agente", { method: "POST", signal: controller.signal });
-      if (!res.ok) { setAnalisis("Error al generar el análisis. Verificá la API key de Anthropic."); return; }
-      const reader = res.body!.getReader();
+      const res = await fetch("/api/admin/agente", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ mensaje: texto, historial: historialParaAPI }),
+        signal:  controller.signal,
+      });
+
+      if (!res.ok || !res.body) {
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = { role: "assistant", content: "Error al conectar con el agente. Verificá la API key de Anthropic." };
+          return updated;
+        });
+        return;
+      }
+
+      const reader  = res.body.getReader();
       const decoder = new TextDecoder();
-      let texto = "";
+      let texto_acc = "";
+
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        texto += decoder.decode(value, { stream: true });
-        setAnalisis(texto);
+        texto_acc += decoder.decode(value, { stream: true });
+        const snap = texto_acc;
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = { role: "assistant", content: snap };
+          return updated;
+        });
       }
-      setFecha(new Date().toLocaleString("es-AR", { day: "2-digit", month: "long", hour: "2-digit", minute: "2-digit" }));
     } catch (err: unknown) {
-      if ((err as { name?: string }).name !== "AbortError") setAnalisis("Error de conexión. Intentá de nuevo.");
-    } finally { setLoading(false); }
+      if ((err as { name?: string }).name !== "AbortError") {
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = { role: "assistant", content: "Error de conexión. Intentá de nuevo." };
+          return updated;
+        });
+      }
+    } finally {
+      setStreaming(false);
+    }
+  }, [messages, streaming]);
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      send(input);
+    }
   }
 
-  function copiar() {
-    if (!analisis) return;
-    navigator.clipboard.writeText(analisis);
-    setCopiado(true);
-    setTimeout(() => setCopiado(false), 2000);
+  function triggerAnalisis() {
+    send("__analisis__", "📊 Analizá los datos del sitio");
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-      <div style={{ background: "#1C1C1E", border: "1px solid #2C2C2E", borderRadius: 6, padding: "20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-        <div>
-          <p style={{ fontSize: 13, fontWeight: 600, color: "#F9FAFB", margin: "0 0 4px" }}>Agente de Estrategia</p>
-          <p style={{ fontSize: 12, color: "#4B5563", margin: 0 }}>Analiza los datos reales del sitio y propone acciones concretas de marketing, SEO y servicios</p>
-        </div>
+    <div style={{ display: "flex", flexDirection: "column", height: "calc(100vh - 200px)", minHeight: 480, background: "#111113", borderRadius: 8, border: "1px solid #2C2C2E", overflow: "hidden" }}>
+
+      {/* Mensajes */}
+      <div style={{ flex: 1, overflowY: "auto", padding: "20px 16px", display: "flex", flexDirection: "column", gap: 14 }}>
+        {messages.length === 0
+          ? <EmptyState onAnalisis={triggerAnalisis} />
+          : messages.map((m, i) =>
+              m.role === "user"
+                ? <BubbleUser key={i} content={m.display ?? m.content} />
+                : <BubbleAssistant key={i} content={m.content} streaming={streaming && i === messages.length - 1} />
+            )
+        }
+        <div ref={bottomRef} />
+      </div>
+
+      {/* Input bar */}
+      <div style={{ borderTop: "1px solid #2C2C2E", padding: "12px 14px", display: "flex", gap: 8, alignItems: "flex-end", background: "#161618" }}>
         <button
-          onClick={generarAnalisis}
-          style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 20px", borderRadius: 4, border: "none", background: loading ? "#2C2C2E" : "#e8820a", color: loading ? "#6B7280" : "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "background 0.2s", whiteSpace: "nowrap" }}
+          onClick={triggerAnalisis}
+          disabled={streaming}
+          title="Analizar datos del sitio"
+          style={{ flexShrink: 0, width: 36, height: 36, borderRadius: 6, border: "1px solid #2C2C2E", background: "#1C1C1E", display: "flex", alignItems: "center", justifyContent: "center", cursor: streaming ? "not-allowed" : "pointer", opacity: streaming ? 0.5 : 1 }}
         >
-          {loading ? <><RefreshCw size={14} style={{ animation: "spin 1s linear infinite" }} /> Analizando…</> : <><Sparkles size={14} /> Generar análisis</>}
+          <BarChart2 size={15} color="#e8820a" />
+        </button>
+
+        <textarea
+          ref={inputRef}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          disabled={streaming}
+          placeholder="Preguntá algo… (Enter para enviar)"
+          rows={1}
+          style={{ flex: 1, background: "#1C1C1E", border: "1px solid #2C2C2E", borderRadius: 6, padding: "8px 12px", color: "#E5E7EB", fontSize: 13, resize: "none", outline: "none", lineHeight: 1.5, maxHeight: 120, overflowY: "auto", fontFamily: "inherit" }}
+        />
+
+        <button
+          onClick={() => send(input)}
+          disabled={streaming || !input.trim()}
+          style={{ flexShrink: 0, width: 36, height: 36, borderRadius: 6, border: "none", background: input.trim() && !streaming ? "#e8820a" : "#2C2C2E", display: "flex", alignItems: "center", justifyContent: "center", cursor: input.trim() && !streaming ? "pointer" : "not-allowed", transition: "background 0.2s" }}
+        >
+          <Send size={15} color={input.trim() && !streaming ? "#fff" : "#4B5563"} />
         </button>
       </div>
 
-      {analisis && (
-        <div style={{ background: "#1C1C1E", border: "1px solid #2C2C2E", borderRadius: 6, overflow: "hidden" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", borderBottom: "1px solid #2C2C2E" }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: "#D1D5DB" }}>Análisis{fecha ? ` · ${fecha}` : ""}</span>
-            <button onClick={copiar} style={{ display: "flex", alignItems: "center", gap: 5, padding: "4px 10px", borderRadius: 4, border: "1px solid #2C2C2E", background: "transparent", color: "#6B7280", fontSize: 11, cursor: "pointer" }}>
-              {copiado ? <><Check size={11} /> Copiado</> : <><Copy size={11} /> Copiar</>}
-            </button>
-          </div>
-          <div style={{ padding: "16px 20px" }}>
-            <MarkdownBlock text={analisis} />
-            {loading && <span style={{ display: "inline-block", width: 8, height: 14, background: "#e8820a", borderRadius: 1, animation: "blink 0.8s step-end infinite", marginLeft: 2, verticalAlign: "middle" }} />}
-          </div>
-        </div>
-      )}
-
-      {!analisis && !loading && (
-        <div style={{ background: "#161618", border: "1px dashed #2C2C2E", borderRadius: 6, padding: "48px 24px", textAlign: "center" }}>
-          <Sparkles size={24} color="#2C2C2E" style={{ marginBottom: 12 }} />
-          <p style={{ fontSize: 13, color: "#374151", margin: 0 }}>Tocá &ldquo;Generar análisis&rdquo; para obtener recomendaciones basadas en los datos reales del sitio</p>
-        </div>
-      )}
-
       <style>{`
         @keyframes blink { 0%, 100% { opacity: 1 } 50% { opacity: 0 } }
-        @keyframes spin { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
+        textarea::placeholder { color: #374151; }
+        div::-webkit-scrollbar { width: 4px; }
+        div::-webkit-scrollbar-track { background: transparent; }
+        div::-webkit-scrollbar-thumb { background: #2C2C2E; border-radius: 2px; }
       `}</style>
     </div>
   );

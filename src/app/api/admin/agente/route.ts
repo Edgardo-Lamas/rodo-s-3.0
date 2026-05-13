@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { createClient } from "@supabase/supabase-js";
 import Anthropic from "@anthropic-ai/sdk";
+import { z } from "zod";
 
 const SYSTEM_PROMPT = `Sos el consultor estratégico de Rodrigo, técnico informático independiente con más de 15 años de experiencia en La Plata, Buenos Aires, Argentina. Combinás expertise en: soporte técnico para hogares y PyMEs, desarrollo web profesional, sistemas con dashboards de KPIs, agentes de IA, automatizaciones, posicionamiento SEO local y estrategias de marketing digital para profesionales independientes.
 
@@ -52,13 +53,6 @@ Desarrollo web local:
 - "diseño web La Plata", "páginas web para negocios La Plata", "landing page La Plata"
 - "desarrollo web profesional La Plata", "web para profesionales La Plata"
 
-Diferenciadores:
-- "técnico informático confiable La Plata", "técnico informático a domicilio La Plata", "servicio técnico PC La Plata"
-
-Contenido para blog/redes:
-- "cómo saber si tu PC tiene virus", "cada cuánto limpiar la PC", "por qué mi PC va lenta"
-- "cómo hacer un backup en Windows", "qué antivirus usar en 2025"
-
 ═══════════════════════════════════════
 CONVERSIÓN Y WHATSAPP
 ═══════════════════════════════════════
@@ -66,56 +60,34 @@ CONVERSIÓN Y WHATSAPP
 PORCENTAJES DE REFERENCIA (técnico independiente con presencia web):
 - Visita → click WhatsApp: 15-30% es bueno. Menos de 10% indica problema de confianza o CTA débil.
 - Mejor horario de contacto: martes a jueves, 9-11h y 15-17h.
-- Si un visitante entra, mira más de 2 secciones y NO hace click en WA → falta urgencia o prueba social.
-
-MENSAJE EFECTIVO DE WHATSAPP (para responder consultas):
-1. Confirmar que recibió el mensaje con nombre.
-2. Hacer una pregunta específica (modelo de PC, síntoma puntual).
-3. Dar una respuesta útil sin cerrar la venta todavía.
-4. Proponer un diagnóstico (presencial o retiro) como siguiente paso natural.
 
 ═══════════════════════════════════════
-INSTRUCCIONES DE ANÁLISIS
+INSTRUCCIONES DE COMPORTAMIENTO
 ═══════════════════════════════════════
 
-Cuando recibas datos del negocio, cruzalos con el conocimiento del mercado. No hagas análisis genérico — usá el contexto estacional, geográfico y de servicio para que cada recomendación sea específica y accionable para Rodrigo en este momento del año.
-
-Respondé SIEMPRE con exactamente estos 4 bloques en formato markdown:
+Cuando recibas el mensaje especial de análisis de negocio, respondé SIEMPRE con exactamente estos 4 bloques en formato markdown:
 
 ## 📊 Resumen del período
-[2-3 oraciones cruzando los números con el contexto de mercado. Directo, sin rodeos.]
-
 ## 🔧 Servicio a destacar esta semana
-[Servicio específico + justificación con datos Y contexto estacional. Una acción concreta: qué publicar, qué decir en redes, cómo mostrarlo en el sitio.]
-
 ## 📞 Acciones inmediatas
-[2-3 acciones concretas. Si hay consultas sin responder, priorizarlas. Si la conversión WA bajó, proponer ajuste. Incluir texto listo para copiar si aplica.]
-
 ## 📣 Campaña sugerida
-[Una campaña concreta con: canal exacto (Instagram/WhatsApp/Google), público objetivo, mensaje completo listo para usar, y timing óptimo según estacionalidad.]
 
-Respondé en español rioplatense. Sin introducciones, sin conclusiones, directo a los 4 bloques.`;
+Para cualquier otra pregunta, respondé de forma directa y conversacional. Podés usar markdown cuando ayude a la claridad (listas, negritas). Sé concreto y accionable. Respondé en español rioplatense. Sin introducciones largas.`;
 
-export async function POST() {
-  const session = await auth();
-  if ((session?.user as { rol?: string })?.rol !== "admin") {
-    return new Response(JSON.stringify({ error: "No autorizado" }), { status: 401 });
-  }
+const MessageSchema = z.object({
+  mensaje:  z.string().min(1).max(2000),
+  historial: z.array(z.object({
+    role:    z.enum(["user", "assistant"]),
+    content: z.string().max(10000),
+  })).max(20).optional(),
+});
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return new Response("ANTHROPIC_API_KEY no configurada.", { status: 503 });
-  }
-
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  let contexto = "";
+async function buildBusinessContext(supabaseUrl: string | undefined): Promise<string> {
+  const fecha = new Date().toLocaleDateString("es-AR", { day: "2-digit", month: "long", year: "numeric" });
 
   if (!supabaseUrl) {
-    // Demo: contexto ficticio para que el agente funcione igual
-    const fecha = new Date().toLocaleDateString("es-AR", { day: "2-digit", month: "long", year: "numeric" });
-    contexto = `
-DATOS DEL NEGOCIO — últimos 30 días (MODO DEMO)
-Fecha del análisis: ${fecha}
+    return `ANÁLISIS DEL NEGOCIO — últimos 30 días (MODO DEMO)
+Fecha: ${fecha}
 
 TRÁFICO WEB:
 - Visitas totales: 74
@@ -128,70 +100,76 @@ SECCIONES MÁS VISTAS:
 - Servicios: 22 visitas
 - Herramientas gratuitas: 15 visitas
 - Red Familiar Segura: 9 visitas
-- Desarrollo web: 7 visitas
 
-HERRAMIENTAS MÁS DESCARGADAS:
-- Generador de Contraseñas: 5 descargas
-- Verificador de Disco: 4 descargas
-- Guía de Seguridad Digital: 2 descargas
+CONSULTAS RECIBIDAS: 5 totales, 2 sin responder`;
+  }
 
-CONSULTAS RECIBIDAS: 5 totales, 2 sin responder
-`.trim();
-  } else {
-    const supabase = createClient(supabaseUrl, process.env.SUPABASE_SERVICE_ROLE_KEY!);
-    const desde = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  const supabase = createClient(supabaseUrl, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+  const desde = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  const hace7d = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-    const [{ data: actividad }, { data: consultas }] = await Promise.all([
-      supabase.from("actividad").select("tipo, payload, page, session_id, created_at").gte("created_at", desde),
-      supabase.from("consultas").select("servicio, estado, created_at").gte("created_at", desde),
-    ]);
+  const [{ data: actividad }, { data: consultas }] = await Promise.all([
+    supabase.from("actividad").select("tipo, payload, page, session_id, created_at").gte("created_at", desde),
+    supabase.from("consultas").select("servicio, estado, created_at").gte("created_at", desde),
+  ]);
 
-    const act = actividad ?? [];
-    const pageviews   = act.filter((a) => a.tipo === "pageview");
-    const clicksWA    = act.filter((a) => a.tipo === "click_whatsapp").length;
-    const descargas   = act.filter((a) => a.tipo === "descarga_herramienta").length;
+  const act = actividad ?? [];
+  const pageviews = act.filter((a) => a.tipo === "pageview");
+  const clicksWA  = act.filter((a) => a.tipo === "click_whatsapp").length;
+  const descargas = act.filter((a) => a.tipo === "descarga_herramienta").length;
+  const uniqueSessions = new Set(pageviews.map((a) => a.session_id).filter(Boolean)).size;
+  const convPct = uniqueSessions > 0 ? Math.round((clicksWA / uniqueSessions) * 100) : 0;
 
-    const uniqueSessions = new Set(pageviews.map((a) => a.session_id).filter(Boolean)).size;
-    const convPct = uniqueSessions > 0 ? Math.round((clicksWA / uniqueSessions) * 100) : 0;
+  const secMap: Record<string, number> = {};
+  pageviews.forEach((a) => { const p = a.page ?? "/"; secMap[p] = (secMap[p] ?? 0) + 1; });
+  const topSecciones = Object.entries(secMap).sort((a, b) => b[1] - a[1]).slice(0, 5);
 
-    const secMap: Record<string, number> = {};
-    pageviews.forEach((a) => { const p = a.page ?? "/"; secMap[p] = (secMap[p] ?? 0) + 1; });
-    const topSecciones = Object.entries(secMap).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const cons = consultas ?? [];
+  const sinResponder = cons.filter((c) => c.estado === "nuevo").length;
 
-    const descMap: Record<string, number> = {};
-    act.filter((a) => a.tipo === "descarga_herramienta").forEach((a) => {
-      const n = a.payload?.nombre ?? "Desconocida";
-      descMap[n] = (descMap[n] ?? 0) + 1;
-    });
-    const topDescargas = Object.entries(descMap).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const act7d = act.filter((a) => a.created_at >= hace7d);
+  const clicksWA7d = act7d.filter((a) => a.tipo === "click_whatsapp").length;
 
-    const cons = consultas ?? [];
-    const sinResponder = cons.filter((c) => c.estado === "nuevo").length;
-    const servicioMap: Record<string, number> = {};
-    cons.forEach((c) => { if (c.servicio) servicioMap[c.servicio] = (servicioMap[c.servicio] ?? 0) + 1; });
-
-    const fecha = new Date().toLocaleDateString("es-AR", { day: "2-digit", month: "long", year: "numeric" });
-    contexto = `
-DATOS DEL NEGOCIO — últimos 30 días
-Fecha del análisis: ${fecha}
+  return `ANÁLISIS DEL NEGOCIO — últimos 30 días
+Fecha: ${fecha}
 
 TRÁFICO WEB:
 - Visitas totales: ${pageviews.length}
 - Visitantes únicos: ${uniqueSessions}
-- Clicks a WhatsApp: ${clicksWA} (${convPct}% de conversión visitante → WA)
+- Clicks a WhatsApp: ${clicksWA} (${convPct}% conversión)
+- Clicks WhatsApp últimos 7 días: ${clicksWA7d}
 - Descargas de herramientas: ${descargas}
 
 SECCIONES MÁS VISTAS:
-${topSecciones.map(([s, v]) => `- ${s}: ${v} visitas`).join("\n") || "Sin datos aún"}
+${topSecciones.map(([s, v]) => `- ${s}: ${v} visitas`).join("\n") || "Sin datos"}
 
-HERRAMIENTAS MÁS DESCARGADAS:
-${topDescargas.map(([n, d]) => `- ${n}: ${d} descargas`).join("\n") || "Sin datos aún"}
+CONSULTAS: ${cons.length} totales, ${sinResponder} sin responder`;
+}
 
-CONSULTAS RECIBIDAS: ${cons.length} totales, ${sinResponder} sin responder
-SERVICIOS MÁS CONSULTADOS:
-${Object.entries(servicioMap).map(([s, v]) => `- ${s}: ${v} consultas`).join("\n") || "Sin datos aún"}
-`.trim();
+export async function POST(req: Request) {
+  const session = await auth();
+  if ((session?.user as { rol?: string })?.rol !== "admin") {
+    return new Response(JSON.stringify({ error: "No autorizado" }), { status: 401 });
   }
+
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) return new Response("ANTHROPIC_API_KEY no configurada.", { status: 503 });
+
+  const body = await req.json();
+  const parsed = MessageSchema.safeParse(body);
+  if (!parsed.success) return new Response("Mensaje inválido.", { status: 400 });
+
+  const { mensaje, historial = [] } = parsed.data;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+
+  const userContent = mensaje === "__analisis__"
+    ? await buildBusinessContext(supabaseUrl)
+    : mensaje;
+
+  const messages: Anthropic.MessageParam[] = [
+    ...historial.map((m) => ({ role: m.role, content: m.content } as Anthropic.MessageParam)),
+    { role: "user", content: userContent },
+  ];
 
   const client = new Anthropic({ apiKey });
   const encoder = new TextEncoder();
@@ -202,7 +180,7 @@ ${Object.entries(servicioMap).map(([s, v]) => `- ${s}: ${v} consultas`).join("\n
         model:      "claude-opus-4-7",
         max_tokens: 2048,
         system: [{ type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } }],
-        messages:  [{ role: "user", content: contexto }],
+        messages,
       });
 
       for await (const chunk of response) {
