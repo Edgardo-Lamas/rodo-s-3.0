@@ -59,5 +59,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 
   pages: { signIn: "/admin/login" },
-  session: { strategy: "jwt", maxAge: 60 * 60 * 8 },
+  session: { strategy: "jwt", maxAge: 60 * 60 * 24 * 365 },
 });
