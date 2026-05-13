@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { createClient } from "@supabase/supabase-js";
+import { z } from "zod";
+import type { Session } from "next-auth";
 
 function generateToken() {
   const array = new Uint8Array(32);
@@ -8,9 +10,26 @@ function generateToken() {
   return Buffer.from(array).toString("base64url");
 }
 
+function isAdmin(session: Session | null) {
+  return (session?.user as { rol?: string })?.rol === "admin";
+}
+
+const PostSchema = z.object({
+  nombre_familia:      z.string().min(1).max(100),
+  nextdns_profile_id:  z.string().max(50).optional(),
+  email:               z.email().max(254).optional(),
+  telefono:            z.string().max(30).optional(),
+  notas:               z.string().max(500).optional(),
+});
+
+const PatchSchema = z.object({
+  id:     z.uuid(),
+  activo: z.boolean(),
+});
+
 export async function GET() {
   const session = await auth();
-  if ((session?.user as { rol?: string })?.rol !== "admin") return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  if (!isAdmin(session)) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   if (!supabaseUrl) {
@@ -34,11 +53,15 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const session = await auth();
-  if ((session?.user as { rol?: string })?.rol !== "admin") return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  if (!isAdmin(session)) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
 
-  const { nombre_familia, nextdns_profile_id, email, telefono, notas } = await req.json();
-  if (!nombre_familia) return NextResponse.json({ error: "Nombre requerido" }, { status: 400 });
+  const body = await req.json();
+  const parsed = PostSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
+  }
 
+  const { nombre_familia, nextdns_profile_id, email, telefono, notas } = parsed.data;
   const token = generateToken();
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -57,13 +80,18 @@ export async function POST(req: Request) {
 
 export async function PATCH(req: Request) {
   const session = await auth();
-  if ((session?.user as { rol?: string })?.rol !== "admin") return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  if (!isAdmin(session)) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
 
-  const { id, activo } = await req.json();
+  const body = await req.json();
+  const parsed = PatchSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Datos inválidos" }, { status: 400 });
+  }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   if (!supabaseUrl) return NextResponse.json({ ok: true, demo: true });
 
+  const { id, activo } = parsed.data;
   const supabase = createClient(supabaseUrl, process.env.SUPABASE_SERVICE_ROLE_KEY!);
   await supabase.from("clientes_red_familiar").update({ activo }).eq("id", id);
   return NextResponse.json({ ok: true });
