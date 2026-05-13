@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Sparkles, Copy, Check } from "lucide-react";
 
 const ESTADO_LABELS: Record<string, { label: string; color: string; bg: string }> = {
   nuevo:      { label: "Nuevo",      color: "#3B82F6", bg: "#3B82F622" },
@@ -20,9 +20,16 @@ interface Consulta {
   created_at: string;
 }
 
+interface DraftState {
+  loading: boolean;
+  texto: string;
+  copiado: boolean;
+}
+
 export default function ConsultasTab({ consultas: initial }: { consultas: Consulta[] }) {
   const [consultas, setConsultas] = useState<Consulta[]>(initial);
   const [expandido, setExpandido] = useState<string | null>(null);
+  const [drafts, setDrafts] = useState<Record<string, DraftState>>({});
 
   async function cambiarEstado(id: string, estado: string) {
     await fetch("/api/admin/consultas", {
@@ -31,6 +38,47 @@ export default function ConsultasTab({ consultas: initial }: { consultas: Consul
       body: JSON.stringify({ id, estado }),
     });
     setConsultas((prev) => prev.map((c) => c.id === id ? { ...c, estado } : c));
+  }
+
+  async function redactar(c: Consulta) {
+    setDrafts((prev) => ({ ...prev, [c.id]: { loading: true, texto: "", copiado: false } }));
+
+    const prompt = `Redactá una respuesta profesional por email para esta consulta de un cliente:
+
+Cliente: ${c.nombre}
+Email: ${c.email}${c.telefono ? `\nTeléfono: ${c.telefono}` : ""}
+Servicio consultado: ${c.servicio ?? "General"}
+Mensaje del cliente: ${c.mensaje ?? "(sin mensaje)"}
+
+Escribí solo el cuerpo del email, sin asunto. Tono cálido y directo, en primera persona. Firmá como "Rodrigo – Rodo's 3.0 / Tel: 221-506-9677".`;
+
+    try {
+      const res = await fetch("/api/admin/agente", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mensaje: prompt }),
+      });
+
+      if (!res.body) throw new Error("Sin stream");
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let texto = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        texto += decoder.decode(value, { stream: true });
+        setDrafts((prev) => ({ ...prev, [c.id]: { loading: false, texto, copiado: false } }));
+      }
+    } catch {
+      setDrafts((prev) => ({ ...prev, [c.id]: { loading: false, texto: "Error al generar el borrador.", copiado: false } }));
+    }
+  }
+
+  function copiar(id: string, texto: string) {
+    navigator.clipboard.writeText(texto);
+    setDrafts((prev) => ({ ...prev, [id]: { ...prev[id], copiado: true } }));
+    setTimeout(() => setDrafts((prev) => ({ ...prev, [id]: { ...prev[id], copiado: false } })), 2000);
   }
 
   if (!consultas.length) {
@@ -47,6 +95,7 @@ export default function ConsultasTab({ consultas: initial }: { consultas: Consul
       {consultas.map((c) => {
         const est = ESTADO_LABELS[c.estado] ?? { label: c.estado, color: "#9CA3AF", bg: "#9CA3AF22" };
         const isOpen = expandido === c.id;
+        const draft = drafts[c.id];
         return (
           <div key={c.id} style={{ background: "#1C1C1E", border: "1px solid #2C2C2E", borderRadius: 6, overflow: "hidden" }}>
             <div
@@ -80,7 +129,39 @@ export default function ConsultasTab({ consultas: initial }: { consultas: Consul
                     {c.mensaje}
                   </p>
                 )}
+
+                {/* Borrador IA */}
+                {draft && (
+                  <div style={{ background: "#0f1a2e", border: "1px solid #e8820a33", borderRadius: 4, padding: "10px 12px", display: "flex", flexDirection: "column", gap: 8 }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <span style={{ fontSize: 11, color: "#e8820a", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>
+                        ✦ Borrador IA
+                      </span>
+                      {draft.texto && !draft.loading && (
+                        <button
+                          onClick={() => copiar(c.id, draft.texto)}
+                          style={{ display: "flex", alignItems: "center", gap: 4, padding: "4px 8px", borderRadius: 3, background: draft.copiado ? "#22C55E22" : "#e8820a22", color: draft.copiado ? "#22C55E" : "#e8820a", fontSize: 11, fontWeight: 600, border: "none", cursor: "pointer" }}
+                        >
+                          {draft.copiado ? <><Check size={11} /> Copiado</> : <><Copy size={11} /> Copiar</>}
+                        </button>
+                      )}
+                    </div>
+                    {draft.loading ? (
+                      <p style={{ fontSize: 12, color: "#4B5563", margin: 0 }}>Generando borrador<span style={{ animation: "pulse 1s infinite" }}>…</span></p>
+                    ) : (
+                      <p style={{ fontSize: 13, color: "#D1D5DB", margin: 0, lineHeight: 1.7, whiteSpace: "pre-wrap" }}>{draft.texto}</p>
+                    )}
+                  </div>
+                )}
+
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  <button
+                    onClick={() => redactar(c)}
+                    disabled={draft?.loading}
+                    style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", borderRadius: 4, background: "#e8820a22", color: "#e8820a", fontSize: 12, fontWeight: 600, border: "1px solid #e8820a44", cursor: draft?.loading ? "not-allowed" : "pointer", opacity: draft?.loading ? 0.6 : 1 }}
+                  >
+                    <Sparkles size={13} /> {draft?.texto ? "Regenerar" : "Redactar con IA"}
+                  </button>
                   {c.telefono && (
                     <a
                       href={`https://wa.me/${c.telefono.replace(/\D/g, "")}`}
@@ -88,7 +169,7 @@ export default function ConsultasTab({ consultas: initial }: { consultas: Consul
                       rel="noopener noreferrer"
                       style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", borderRadius: 4, background: "#22C55E22", color: "#22C55E", fontSize: 12, fontWeight: 600, textDecoration: "none", border: "1px solid #22C55E44" }}
                     >
-                      <MessageCircle size={13} /> Responder por WhatsApp
+                      <MessageCircle size={13} /> WhatsApp
                     </a>
                   )}
                   <a
