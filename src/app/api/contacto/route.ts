@@ -44,7 +44,7 @@ export async function POST(req: Request) {
     const resendKey = process.env.RESEND_API_KEY;
     if (resendKey) {
       const resend = new Resend(resendKey);
-      await resend.emails.send({
+      const { data: emailData, error: emailError } = await resend.emails.send({
         from:    "Rodo's 3.0 <onboarding@resend.dev>",
         to:      "rodrigo.laporta.spb@gmail.com",
         replyTo: email,
@@ -71,6 +71,11 @@ export async function POST(req: Request) {
           </div>
         `,
       });
+      if (emailError) {
+        console.error("[Resend] error:", JSON.stringify(emailError));
+      } else {
+        console.log("[Resend] enviado OK, id:", emailData?.id);
+      }
     }
 
     return NextResponse.json({ ok: true });
