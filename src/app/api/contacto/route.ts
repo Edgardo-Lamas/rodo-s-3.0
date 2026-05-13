@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     if (resendKey) {
       const resend = new Resend(resendKey);
       await resend.emails.send({
-        from:    "Rodo's 3.0 <consultas@rodostech.com.ar>",
+        from:    "Rodo's 3.0 <onboarding@resend.dev>",
         to:      "rodrigo.laporta.spb@gmail.com",
         replyTo: email,
         subject: `Nueva consulta de ${nombre} — ${servicioLabel}`,
