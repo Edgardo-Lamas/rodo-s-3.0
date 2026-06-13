@@ -167,3 +167,65 @@ Tres garantías verificables (sin explicar el mecanismo técnico):
 - Siempre reiniciar con `rm -rf .next && npm run dev` si aparece `ChunkLoadError`
 - TypeScript strict: usar `LucideIcon` (no `React.ComponentType<...>`) para íconos de lucide-react
 - El agente de Claude usa `cache_control: { type: "ephemeral" }` en el system prompt
+
+---
+
+## Flyers animados
+
+Flyers promocionales para WhatsApp estado y redes sociales de Rodrigo.
+
+### Herramientas disponibles
+
+| Herramienta | Rol | Cómo invocar |
+|---|---|---|
+| **Remotion** | Animar el flyer con React (texto, efectos, transiciones) | skill `remotion` + `remotion-best-practices` |
+| **BFL FLUX API** | Generar fondos/imágenes con IA | skill `bfl-api` o `flux-best-practices` |
+| **Canva MCP** | Diseñar assets estáticos, exportar PNG | MCP `mcp__claude_ai_Canva__*` |
+| **ffmpeg** | Procesar, comprimir o convertir el video final | skill `ffmpeg` |
+| **Fooocus** | Generación local de imágenes (Stable Diffusion) — NO disponible como tool, usar FLUX en su lugar | — |
+
+### Formatos
+
+| Formato | Resolución | Uso |
+|---|---|---|
+| WhatsApp estado / Stories | 1080 × 1920 px · 9:16 · ≤30s | WhatsApp, Instagram Stories |
+| Feed Instagram cuadrado | 1080 × 1080 px · 1:1 | Instagram feed |
+| Feed Instagram horizontal | 1080 × 566 px · 16:9 | Facebook, LinkedIn |
+
+### Paleta de colores (misma que el sitio)
+
+| Variable | Valor |
+|---|---|
+| Fondo oscuro | `#060d1f` / `#0a1533` |
+| Naranja marca | `#e8820a` |
+| Azul marca | `#4a9eff` |
+| Texto principal | `#ffffff` |
+| Texto secundario | `#D1D5DB` |
+
+### Servicios — flyers existentes
+
+| Servicio | Estado | Archivo |
+|---|---|---|
+| Desarrollo Web | ✅ Listo | `flyers/out/desarrollo-web.mp4` (3 MB) |
+| Red Familiar Segura | ✅ Listo | `flyers/out/red-familiar-final.mp4` (6.3 MB) |
+
+### Workflow para un flyer nuevo
+
+1. Definir servicio, formato y copy (título, subtítulo, CTA)
+2. Generar fondo con FLUX (prompt tech/oscuro que pegue con la paleta)
+3. Construir composición Remotion en `flyers/` con la marca
+4. Exportar con `npx remotion render` → video MP4
+5. Comprimir con ffmpeg si supera 8 MB (límite WhatsApp)
+6. Actualizar tabla de flyers existentes arriba
+
+### Copy base por servicio
+
+**Desarrollo Web**
+- Título: "Tu negocio en internet"
+- Sub: "Sitios profesionales desde La Plata · Rápidos, modernos y a medida"
+- CTA: "Consultame por WhatsApp · 221-506-9677"
+
+**Red Familiar Segura**
+- Título: "Internet segura para tus hijos"
+- Sub: "Control en el router y en cada dispositivo · Sin contratos"
+- CTA: "Consultame por WhatsApp · 221-506-9677"

@@ -5,28 +5,27 @@ import { MessageCircle, ChevronDown, Shield, MapPin, Wifi } from "lucide-react";
 import { WHATSAPP_URL } from "@/lib/config";
 import TechPlayerWrapper from "@/components/ui/TechAnimation/TechPlayerWrapper";
 
-/* Typewriter — escribe el texto letra a letra, arranca después del fade-up */
-function useTypewriter(text: string, speed = 72, startDelay = 900) {
-  const [displayed, setDisplayed] = useState("");
-  const [done, setDone] = useState(false);
+/* Typewriter — cada letra dispara la siguiente con setTimeout en cadena */
+function useTypewriter(text: string, speed = 70, startDelay = 600) {
+  const [index, setIndex] = useState(-1);
 
+  /* arranque inicial con delay */
   useEffect(() => {
-    let i = 0;
-    const timeout = setTimeout(() => {
-      const interval = setInterval(() => {
-        i++;
-        setDisplayed(text.slice(0, i));
-        if (i >= text.length) {
-          clearInterval(interval);
-          setDone(true);
-        }
-      }, speed);
-      return () => clearInterval(interval);
-    }, startDelay);
-    return () => clearTimeout(timeout);
-  }, [text, speed, startDelay]);
+    const t = setTimeout(() => setIndex(0), startDelay);
+    return () => clearTimeout(t);
+  }, [startDelay]);
 
-  return { displayed, done };
+  /* cada cambio de index dispara el siguiente */
+  useEffect(() => {
+    if (index < 0 || index >= text.length) return;
+    const t = setTimeout(() => setIndex((n) => n + 1), speed);
+    return () => clearTimeout(t);
+  }, [index, text.length, speed]);
+
+  return {
+    displayed: index < 0 ? "" : text.slice(0, index + 1),
+    done: index >= text.length,
+  };
 }
 
 const TRUST_ITEMS = [
@@ -107,10 +106,13 @@ export default function Hero() {
 
             <h1 className="animate-fade-up delay-200 text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.05] tracking-tight text-balance mb-6">
               Tu PC{" "}
-              <span className="text-brand-orange">
-                {displayed}
+              <span className="text-brand-orange inline-flex items-baseline gap-[1px]">
+                <span>{displayed}</span>
                 {!done && (
-                  <span className="animate-pulse opacity-70" aria-hidden="true">|</span>
+                  <span
+                    className="inline-block w-[3px] h-[0.85em] bg-brand-orange animate-[cursor-blink_0.75s_step-end_infinite] translate-y-[0.05em]"
+                    aria-hidden="true"
+                  />
                 )}
               </span>
               <br className="hidden sm:block" />

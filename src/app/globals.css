@@ -63,6 +63,12 @@
   100% { transform: translateY(0); }
 }
 
+/* Cursor parpadeante para efecto typewriter */
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
 /* Glow pulsante para el CTA principal */
 @keyframes pulse-glow-orange {
   0%, 100% { box-shadow: 0 0 20px rgba(232,130,10,0.35), 0 4px 24px rgba(232,130,10,0.2); }
