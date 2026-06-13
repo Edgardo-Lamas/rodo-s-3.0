@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import {
   MessageCircle,
   Search,
@@ -67,7 +70,19 @@ const RETIRO_PASOS: {
   },
 ];
 
+const STEP_DURATION = 1100; // ms por paso
+
 export default function Proceso() {
+  const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(
+      () => setActiveStep((s) => (s + 1) % PASOS.length),
+      STEP_DURATION
+    );
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <section
       id="proceso"
@@ -76,7 +91,7 @@ export default function Proceso() {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* ── Parte A: Pasos ── */}
+        {/* ── Header ── */}
         <div className="text-center mb-14">
           <p className="text-brand-orange text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] mb-4">
             Cómo trabajo
@@ -94,17 +109,24 @@ export default function Proceso() {
           {PASOS.map((paso, idx) => {
             const Icon = paso.icono;
             const isLast = idx === PASOS.length - 1;
-            return (
-              <li key={paso.numero} className="relative flex md:flex-col items-start md:items-center gap-5 md:gap-0">
+            const isActive = activeStep === idx;
+            /* el conector se ilumina cuando el paso anterior está activo */
+            const connectorLit = activeStep === idx;
 
+            return (
+              <li
+                key={paso.numero}
+                className="relative flex md:flex-col items-start md:items-center gap-5 md:gap-0"
+              >
                 {/* Conector punteado desktop */}
                 {!isLast && (
                   <div
-                    className="hidden md:block absolute top-10 left-[calc(50%+2.5rem)] right-[calc(-50%+2.5rem)] h-px"
+                    className="hidden md:block absolute top-10 left-[calc(50%+2.5rem)] right-[calc(-50%+2.5rem)] h-px transition-all duration-500"
                     style={{
-                      backgroundImage:
-                        "repeating-linear-gradient(to right, #4a9eff 0, #4a9eff 6px, transparent 6px, transparent 14px)",
-                      opacity: 0.4,
+                      backgroundImage: connectorLit
+                        ? "repeating-linear-gradient(to right, #e8820a 0, #e8820a 6px, transparent 6px, transparent 14px)"
+                        : "repeating-linear-gradient(to right, #4a9eff 0, #4a9eff 6px, transparent 6px, transparent 14px)",
+                      opacity: connectorLit ? 0.9 : 0.35,
                     }}
                     aria-hidden="true"
                   />
@@ -113,11 +135,12 @@ export default function Proceso() {
                 {/* Conector vertical mobile */}
                 {!isLast && (
                   <div
-                    className="md:hidden absolute left-[1.15rem] top-[4.5rem] bottom-0 w-px"
+                    className="md:hidden absolute left-[1.15rem] top-[4.5rem] bottom-0 w-px transition-all duration-500"
                     style={{
-                      backgroundImage:
-                        "repeating-linear-gradient(to bottom, #4a9eff 0, #4a9eff 6px, transparent 6px, transparent 14px)",
-                      opacity: 0.4,
+                      backgroundImage: connectorLit
+                        ? "repeating-linear-gradient(to bottom, #e8820a 0, #e8820a 6px, transparent 6px, transparent 14px)"
+                        : "repeating-linear-gradient(to bottom, #4a9eff 0, #4a9eff 6px, transparent 6px, transparent 14px)",
+                      opacity: connectorLit ? 0.9 : 0.35,
                     }}
                     aria-hidden="true"
                   />
@@ -127,16 +150,44 @@ export default function Proceso() {
                 <div className="relative shrink-0 w-20 h-20 md:mb-5 flex items-center justify-center">
                   {/* Número translúcido */}
                   <span
-                    className="absolute inset-0 flex items-center justify-center text-5xl font-black text-brand-orange/15 select-none leading-none"
+                    className="absolute inset-0 flex items-center justify-center text-5xl font-black select-none leading-none transition-all duration-500"
+                    style={{
+                      color: isActive
+                        ? "rgba(232,130,10,0.45)"
+                        : "rgba(232,130,10,0.15)",
+                    }}
                     aria-hidden="true"
                   >
                     {paso.numero}
                   </span>
-                  {/* Círculo */}
-                  <div className="relative z-10 w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+
+                  {/* Círculo con flash */}
+                  <div
+                    className="relative z-10 w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500"
+                    style={
+                      isActive
+                        ? {
+                            background: "rgba(232,130,10,0.18)",
+                            border: "1px solid rgba(232,130,10,0.7)",
+                            boxShadow:
+                              "0 0 22px rgba(232,130,10,0.55), 0 0 8px rgba(232,130,10,0.35) inset",
+                          }
+                        : {
+                            background: "rgba(255,255,255,0.05)",
+                            border: "1px solid rgba(255,255,255,0.10)",
+                            boxShadow: "none",
+                          }
+                    }
+                  >
                     <Icon
                       size={26}
-                      className="text-brand-orange"
+                      className="transition-all duration-500"
+                      style={{
+                        color: isActive ? "#fff" : "#e8820a",
+                        filter: isActive
+                          ? "drop-shadow(0 0 6px rgba(232,130,10,0.9))"
+                          : "none",
+                      }}
                       aria-hidden="true"
                     />
                   </div>
@@ -144,7 +195,10 @@ export default function Proceso() {
 
                 {/* Texto */}
                 <div className="md:text-center md:px-4 pb-10 md:pb-0">
-                  <h3 className="text-white font-semibold text-base mb-1.5">
+                  <h3
+                    className="font-semibold text-base mb-1.5 transition-colors duration-500"
+                    style={{ color: isActive ? "#fff" : "rgba(255,255,255,0.75)" }}
+                  >
                     {paso.titulo}
                   </h3>
                   <p className="text-gray-400 text-sm leading-relaxed">
@@ -172,7 +226,6 @@ export default function Proceso() {
             ¿Cómo funciona el retiro?
           </h3>
 
-          {/* Imagen */}
           <div className="relative rounded-3xl overflow-hidden mb-8 aspect-[16/6]">
             <Image
               src="/images/soporte.jpg"
@@ -185,14 +238,12 @@ export default function Proceso() {
             <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/60 via-transparent to-transparent" />
           </div>
 
-          {/* 3 pasos del flujo */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {RETIRO_PASOS.map(({ icono: Icon, titulo, descripcion }, idx) => (
               <div
                 key={titulo}
                 className="relative flex flex-col items-start gap-4 bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-brand-orange/40 hover:bg-white/[0.07] transition-all duration-300"
               >
-                {/* Número de paso */}
                 <span className="absolute top-4 right-5 text-4xl font-black text-brand-orange/10 select-none leading-none">
                   {String(idx + 1).padStart(2, "0")}
                 </span>
