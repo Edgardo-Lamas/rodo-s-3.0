@@ -8,7 +8,35 @@ const TRUST_ITEMS = [
   { icon: Shield,  label: "Confidencialidad garantizada" },
 ];
 
-const DOT_PATTERN = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='2' cy='2' r='1.5' fill='%23ffffff'/%3E%3C/svg%3E")`;
+/* RetroGrid extraído de Magic MCP — perspectiva 3D animada */
+function RetroGrid() {
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 -z-20 overflow-hidden opacity-[0.18]"
+      style={{ perspective: "200px" }}
+      aria-hidden="true"
+    >
+      <div className="absolute inset-0" style={{ transform: "rotateX(65deg)" }}>
+        <div
+          className="animate-grid"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, #4a9eff 1px, transparent 0), linear-gradient(to bottom, #4a9eff 1px, transparent 0)",
+            backgroundRepeat: "repeat",
+            backgroundSize: "60px 60px",
+            height: "300vh",
+            inset: "0% 0px",
+            marginLeft: "-200%",
+            transformOrigin: "100% 0 0",
+            width: "600vw",
+          }}
+        />
+      </div>
+      {/* fade hacia abajo */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#060d1f] via-transparent to-transparent" />
+    </div>
+  );
+}
 
 export default function Hero() {
   return (
@@ -16,17 +44,17 @@ export default function Hero() {
       className="relative flex items-center min-h-[80vh] md:min-h-[90vh] overflow-hidden"
       aria-label="Sección principal"
     >
-      {/* ── Fondos ── */}
+      {/* ── Fondo base ── */}
       <div
         className="absolute inset-0 -z-30"
         style={{ background: "linear-gradient(160deg, #0a1533 0%, #060d1f 60%, #04090f 100%)" }}
         aria-hidden="true"
       />
-      <div
-        className="absolute inset-0 -z-20 opacity-[0.04]"
-        style={{ backgroundImage: DOT_PATTERN }}
-        aria-hidden="true"
-      />
+
+      {/* RetroGrid animado (Magic MCP) */}
+      <RetroGrid />
+
+      {/* Blobs de color */}
       <div
         className="absolute -z-10 bottom-0 right-0 w-[480px] h-[480px] md:w-[700px] md:h-[700px] translate-x-1/3 translate-y-1/3 rounded-full blur-3xl"
         style={{ backgroundColor: "rgba(232,130,10,0.22)" }}
@@ -62,24 +90,35 @@ export default function Hero() {
             </p>
 
             <div className="animate-fade-up delay-400 flex flex-col sm:flex-row gap-4 mb-12">
+
+              {/* WhatsApp CTA — con glow pulsante (Magic MCP) */}
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Hablar con Rodrigo por WhatsApp"
-                className="inline-flex items-center justify-center gap-2.5 bg-brand-orange hover:bg-brand-orangeDark text-white font-semibold text-base px-7 py-4 rounded-full shadow-lg shadow-orange-900/30 transition-all duration-200 hover:scale-105 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark"
+                className="animate-pulse-glow-orange inline-flex items-center justify-center gap-2.5 bg-brand-orange hover:bg-brand-orangeDark text-white font-semibold text-base px-7 py-4 rounded-full transition-all duration-200 hover:scale-105 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark"
               >
                 <MessageCircle size={20} aria-hidden="true" />
                 Hablar por WhatsApp
               </a>
-              <a
-                href="#servicios"
-                aria-label="Ver todos los servicios"
-                className="inline-flex items-center justify-center gap-2.5 border-2 border-brand-blue text-white font-semibold text-base px-7 py-4 rounded-full transition-all duration-200 hover:bg-brand-blue/10 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark"
-              >
-                Ver servicios
-                <ChevronDown size={18} aria-hidden="true" />
-              </a>
+
+              {/* Ver servicios — borde giratorio (Magic MCP) */}
+              <span className="relative inline-block overflow-hidden rounded-full p-[1.5px]">
+                <span
+                  className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#4a9eff_0%,#060d1f_50%,#4a9eff_100%)]"
+                  aria-hidden="true"
+                />
+                <a
+                  href="#servicios"
+                  aria-label="Ver todos los servicios"
+                  className="relative inline-flex items-center justify-center gap-2.5 bg-[#060d1f] text-white font-semibold text-base px-7 py-4 rounded-full transition-all duration-200 hover:bg-brand-blue/10 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark"
+                >
+                  Ver servicios
+                  <ChevronDown size={18} aria-hidden="true" />
+                </a>
+              </span>
+
             </div>
 
             <div
@@ -104,6 +143,16 @@ export default function Hero() {
 
         </div>
       </div>
+
+      {/* Scroll indicator */}
+      <a
+        href="#servicios"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/30 hover:text-white/60 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue rounded"
+        aria-label="Ver servicios"
+      >
+        <span className="text-[10px] uppercase tracking-[0.2em] font-medium">Scroll</span>
+        <ChevronDown size={18} className="animate-bounce" aria-hidden="true" />
+      </a>
     </section>
   );
 }

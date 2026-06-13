@@ -24,7 +24,7 @@ export default function Servicios() {
   return (
     <section
       id="servicios"
-      className="relative py-24 md:py-32"
+      className="relative py-24 md:py-32 bg-white/[0.025]"
       aria-labelledby="servicios-heading"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -83,7 +83,7 @@ export default function Servicios() {
                 >
                   {/* ── Cara frontal ── */}
                   <div
-                    className="absolute inset-0 flex flex-col sm:flex-row items-start gap-6 bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-brand-orange/60 hover:bg-white/[0.07] transition-colors duration-300"
+                    className="absolute inset-0 flex flex-col sm:flex-row items-start gap-6 bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-brand-orange/60 hover:bg-white/[0.07] hover:shadow-[0_0_35px_rgba(232,130,10,0.18)] transition-all duration-300"
                     style={{ backfaceVisibility: "hidden" }}
                   >
                     {webService.badge && (
@@ -195,7 +195,7 @@ export default function Servicios() {
                   >
                     {/* ── Cara frontal ── */}
                     <div
-                      className="absolute inset-0 flex flex-col gap-4 bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-brand-orange/60 hover:bg-white/[0.07] transition-colors duration-300"
+                      className="absolute inset-0 flex flex-col gap-4 bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-brand-orange/60 hover:bg-white/[0.07] hover:shadow-[0_0_30px_rgba(232,130,10,0.15)] transition-all duration-300"
                       style={{ backfaceVisibility: "hidden" }}
                     >
                       {servicio.badge && (

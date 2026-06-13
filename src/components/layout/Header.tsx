@@ -7,10 +7,10 @@ import { WHATSAPP_URL } from "@/lib/config";
 const NAV_LINKS = [
   { label: "Servicios", href: "#servicios" },
   { label: "Sobre mí", href: "#sobre-mi" },
-  { label: "Desarrollo web", href: "#desarrollo-web" },
-  { label: "Red Familiar", href: "#red-familiar" },
-  { label: "Herramientas gratis", href: "#herramientas" },
-  { label: "Proceso", href: "#proceso" },
+  { label: "Desarrollo web", href: "#desarrollo-web", mdHidden: true },
+  { label: "Red Familiar", href: "#red-familiar", mdHidden: true },
+  { label: "Herramientas gratis", href: "#herramientas", mdHidden: true },
+  { label: "Proceso", href: "#proceso", mdHidden: true },
   { label: "FAQs", href: "#faqs" },
   { label: "Contacto", href: "#contacto" },
 ];
@@ -64,7 +64,7 @@ export default function Header() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-medium text-gray-300 hover:text-brand-blue transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue rounded"
+                  className={`text-sm font-medium text-gray-300 hover:text-brand-blue transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue rounded${link.mdHidden ? " hidden lg:block" : ""}`}
                 >
                   {link.label}
                 </a>

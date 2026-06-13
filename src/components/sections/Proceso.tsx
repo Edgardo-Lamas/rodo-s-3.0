@@ -71,7 +71,7 @@ export default function Proceso() {
   return (
     <section
       id="proceso"
-      className="relative py-24 md:py-32"
+      className="relative py-24 md:py-32 bg-white/[0.025]"
       aria-labelledby="proceso-heading"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
