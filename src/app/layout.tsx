@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
 import { PageTracker } from "@/components/PageTracker";
+import ScrollProgressBar from "@/components/ui/ScrollProgressBar";
 
 const SITE_URL = "https://rodo-s-3-0.vercel.app"; // actualizar a dominio propio cuando esté disponible
 
@@ -121,6 +122,7 @@ export default function RootLayout({
           Saltar al contenido principal
         </a>
 
+        <ScrollProgressBar />
         <PageTracker />
         <Header />
         <div id="main-content" tabIndex={-1}>

@@ -1,6 +1,33 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { MessageCircle, ChevronDown, Shield, MapPin, Wifi } from "lucide-react";
 import { WHATSAPP_URL } from "@/lib/config";
 import TechPlayerWrapper from "@/components/ui/TechAnimation/TechPlayerWrapper";
+
+/* Typewriter — escribe el texto letra a letra, arranca después del fade-up */
+function useTypewriter(text: string, speed = 72, startDelay = 900) {
+  const [displayed, setDisplayed] = useState("");
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    let i = 0;
+    const timeout = setTimeout(() => {
+      const interval = setInterval(() => {
+        i++;
+        setDisplayed(text.slice(0, i));
+        if (i >= text.length) {
+          clearInterval(interval);
+          setDone(true);
+        }
+      }, speed);
+      return () => clearInterval(interval);
+    }, startDelay);
+    return () => clearTimeout(timeout);
+  }, [text, speed, startDelay]);
+
+  return { displayed, done };
+}
 
 const TRUST_ITEMS = [
   { icon: MapPin,  label: "A domicilio / remoto" },
@@ -39,6 +66,8 @@ function RetroGrid() {
 }
 
 export default function Hero() {
+  const { displayed, done } = useTypewriter("funcionando");
+
   return (
     <section
       className="relative flex items-center min-h-[80vh] md:min-h-[90vh] overflow-hidden"
@@ -78,7 +107,12 @@ export default function Hero() {
 
             <h1 className="animate-fade-up delay-200 text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.05] tracking-tight text-balance mb-6">
               Tu PC{" "}
-              <span className="text-brand-orange">funcionando</span>
+              <span className="text-brand-orange">
+                {displayed}
+                {!done && (
+                  <span className="animate-pulse opacity-70" aria-hidden="true">|</span>
+                )}
+              </span>
               <br className="hidden sm:block" />
               {" "}como el primer día.
             </h1>
