@@ -1,9 +1,55 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Download, Trash2, Search, FileText, KeyRound, HardDrive, ShieldCheck } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import DescargaModal from "@/components/DescargaModal";
+
+/* SpotlightCard — glow que sigue el mouse (patrón GlowCard de Magic MCP) */
+function SpotlightCard({
+  children,
+  color,
+  className = "",
+}: {
+  children: React.ReactNode;
+  color: "orange" | "blue";
+  className?: string;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+    card.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+  };
+
+  const spotColor =
+    color === "blue"
+      ? "rgba(74,158,255,0.13)"
+      : "rgba(232,130,10,0.13)";
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      className={`group relative ${className}`}
+      style={{ "--spotlight-color": spotColor } as React.CSSProperties}
+    >
+      {/* Spotlight overlay */}
+      <div
+        className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+        style={{
+          background:
+            "radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--spotlight-color), transparent 70%)",
+        }}
+        aria-hidden="true"
+      />
+      {children}
+    </div>
+  );
+}
 
 const DRIVE_FOLDER =
   "https://drive.google.com/drive/folders/15dLflR97SAuXhPvVaTgEDxbNDXNEH6Cb?usp=sharing";
@@ -136,9 +182,10 @@ export default function HerramientasGratuitas() {
             const isPronto = etiqueta.includes("Próximamente");
 
             return (
-              <div
+              <SpotlightCard
                 key={nombre}
-                className={`group relative flex flex-col gap-5 rounded-2xl border p-7 transition-all duration-300 ${
+                color={color}
+                className={`flex flex-col gap-5 rounded-2xl border p-7 transition-all duration-300 ${
                   isBlue
                     ? "bg-brand-blue/5 border-brand-blue/15 hover:border-brand-blue/40 hover:bg-brand-blue/10"
                     : "bg-brand-orange/5 border-brand-orange/15 hover:border-brand-orange/40 hover:bg-brand-orange/10"
@@ -203,7 +250,7 @@ export default function HerramientasGratuitas() {
                     Descargar gratis
                   </button>
                 )}
-              </div>
+              </SpotlightCard>
             );
           })}
         </div>
